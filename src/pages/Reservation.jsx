@@ -201,7 +201,7 @@ export default function ReservationHeroCarrousel() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="w-5 h-5 text-rose-300" />
-                  <span className="text-sm text-ivoire/80">À distance · 30 min</span>
+                  <span className="text-sm text-ivoire/80">À distance</span>
                 </div>
               </div>
             </div>
@@ -436,8 +436,8 @@ export default function ReservationHeroCarrousel() {
               <div className="w-12 h-12 rounded-full bg-rose-300/30 flex items-center justify-center mx-auto mb-3">
                 <Clock className="w-5 h-5 text-rose-700" />
               </div>
-              <p className="font-serif text-lg text-encre mb-1">30 minutes</p>
-              <p className="text-xs text-encre-muted">Premier échange offert</p>
+              <p className="font-serif text-lg text-encre mb-1">Reunion</p>
+              <p className="text-xs text-encre-muted">A distance</p>
             </div>
             <div className="text-center p-5">
               <div className="w-12 h-12 rounded-full bg-sauge-100 flex items-center justify-center mx-auto mb-3">

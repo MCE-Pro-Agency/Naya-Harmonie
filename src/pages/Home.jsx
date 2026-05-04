@@ -90,23 +90,22 @@ export default function Home() {
             </div>
 
             {/* Image hero (droite) - Décalée à gauche + hauteur augmentée */}
+             {/* Image hero (droite) - CENTRÉE SUR MOBILE, DÉCALÉE SUR DESKTOP */}
             <div
               className="lg:col-span-6 order-1 lg:order-2 relative animate-slide-right opacity-0 flex justify-center lg:justify-start"
               style={{ animationDelay: '0.2s' }}
             >
               <div
-                className="relative w-full max-w-sm lg:max-w-md"
+                className="relative w-full max-w-sm lg:max-w-md lg:translate-x-36"
                 style={{
                   aspectRatio: '4 / 5.4',
-                  marginLeft: '0',
-                  transform: 'translateX(9rem)'
                 }}
               >
                 <div className="absolute inset-0 rounded-[160px_160px_20px_20px] overflow-hidden border-[3px] border-rose-300/40 shadow-2xl">
                   <img
                     src="./images/couple4.jpg"
                     alt="Couple complice"
-                    className="w-full h-full object-cover object-center ken"
+                    className="w-full h-full object-cover object-center"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-sauge-900/30 via-transparent to-transparent pointer-events-none" />
                 </div>
