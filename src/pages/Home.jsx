@@ -42,23 +42,17 @@ export default function Home() {
             {/* Texte gauche - Complètement à l'extrémité */}
             <div className="lg:col-span-6 order-2 lg:order-1">
               <div className="flex items-center gap-3 mb-8 animate-fade-in opacity-0">
-                <span className="h-px w-12 bg-rose-300"></span>
-                <span className="font-script text-3xl text-rose-300">Mariame · IPHM</span>
+                
               </div>
 
               <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-medium leading-[0.95] tracking-tight mb-6 animate-fade-up opacity-0" style={{ animationDelay: '0.1s' }}>
-                Retrouvez votre
+                De l'harmonie naît
                 <br />
-                <span className="italic text-rose-300">harmonie</span>
-                <span className="inline-block relative ml-2">
-                  <span className="absolute inset-0 bg-rose-300 -rotate-1"></span>
-                  <span className="relative px-4 text-sauge-900">à&nbsp;deux</span>
-                </span>
+                <span className="italic text-rose-300">l'épanouissement</span>
               </h1>
 
               <p className="text-base lg:text-lg leading-relaxed text-ivoire/80 max-w-xl mb-10 animate-fade-up opacity-0" style={{ animationDelay: '0.3s' }}>
-                Accompagnement holistique pour femmes et couples. Reconnectez-vous à votre corps,
-                votre féminité, votre intimité — et cultivez la sérénité dans votre relation.
+                Coaching holistique pour retrouver votre féminité et renforcer votre couple. Reconnectez-vous à votre corps, votre intimité — et cultivez la sérénité dans votre relation.
               </p>
 
               <div className="flex flex-wrap gap-4 mb-10 animate-fade-up opacity-0" style={{ animationDelay: '0.4s' }}>
