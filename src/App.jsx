@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import Footer from './components/Footer';
 import Header from './components/Header';
+import ScrollToHash from './components/ScrollToHash';
 import WhatsAppFloat from './components/WhatsAppFloat';
 
 export default function App() {
@@ -36,13 +37,14 @@ export default function App() {
   }, [pathname]);
 
   return (
-    <div className="overflow-x-hidden">
-      <Header />
-      <main>
-        <Outlet />
-      </main>
-      <Footer />
-      <WhatsAppFloat />
-    </div>
+   <div className="overflow-x-hidden">
+  <ScrollToHash />   {/* 👈 AJOUT ICI */}
+  <Header />
+  <main>
+    <Outlet />
+  </main>
+  <Footer />
+  <WhatsAppFloat />
+</div>
   );
 }

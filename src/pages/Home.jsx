@@ -2,7 +2,6 @@ import {
   ArrowRight,
   Award,
   Calendar,
-  Check,
   Clock,
   Heart, Leaf,
   MessageCircle,
@@ -255,20 +254,7 @@ export default function Home() {
                 <div className="aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl">
                   <img src="./images/profil.jpg" alt="Mariame en séance" className="w-full h-full object-cover" />
                 </div>
-                <div className="absolute -bottom-8 -right-4 lg:-right-12 bg-ivoire p-6 rounded-2xl shadow-xl max-w-[240px]">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="w-12 h-12 rounded-full bg-sauge-700 flex items-center justify-center">
-                      <Check className="w-5 h-5 text-ivoire" strokeWidth={2.5} />
-                    </div>
-                    <div>
-                      <p className="text-xs uppercase tracking-wider text-encre-muted">Accréditation</p>
-                      <p className="font-serif text-lg font-medium text-sauge-900">IPHM</p>
-                    </div>
-                  </div>
-                  <p className="text-xs text-encre-muted leading-relaxed">
-                    International Practitioners of Holistic Medicine — Praticienne en sexothérapie certifiée
-                  </p>
-                </div>
+                
               </div>
             </div>
 
@@ -287,6 +273,7 @@ export default function Home() {
               <p className="text-encre-soft leading-[1.85] mb-10 text-base lg:text-lg">
                 Certifiée par l'IPHM, je propose un accompagnement à distance, confidentiel et personnalisé, pensé pour les femmes mariées et les couples qui souhaitent cultiver une relation épanouie et durable.
               </p>
+              
 
               <div className="grid sm:grid-cols-2 gap-5 mb-10">
                 {[
@@ -311,10 +298,26 @@ export default function Home() {
                 })}
               </div>
 
-              <Link to="/reservation" className="btn-primary px-8 py-4 rounded-full text-sm font-medium tracking-wide inline-flex items-center gap-3">
-                <span>Découvrir mes services</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+              <div className="flex flex-wrap gap-4">
+                {/* Bouton principal */}
+                <Link
+                  to="/reservation"
+                  className="btn-primary px-8 py-4 rounded-full text-sm font-medium tracking-wide inline-flex items-center gap-3"
+                >
+                  <span>Découvrir mes services</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+
+                {/* Bouton certificat */}
+                <a
+                  href="/images/certificat-reussite.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-8 py-4 rounded-full text-sm font-medium border border-sauge-700 text-sauge-700 hover:bg-sauge-700 hover:text-white transition-all inline-flex items-center gap-2"
+                >
+                  Voir ma certification
+                </a>
+              </div>
             </div>
           </div>
         </div>

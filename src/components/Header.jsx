@@ -1,4 +1,4 @@
-import { ArrowUpRight, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
@@ -17,11 +17,12 @@ export default function Header() {
   }, []);
 
   const links = [
-    { to: '/', label: 'Accueil' },
-    { to: '/boutique', label: 'Boutique' },
-    { to: '/blog', label: 'Journal' },
-    { to: '/reservation', label: 'Rendez-vous' },
-  ];
+  { to: '/', label: 'Accueil' },
+  { to: '/#approche', label: 'À propos' },
+  { to: '/boutique', label: 'Boutique' },
+  { to: '/blog', label: 'Blog' },
+  { to: '/reservation', label: 'Coaching' },
+];
 
   return (
     <>
@@ -41,31 +42,41 @@ export default function Header() {
           </Link>
 
           <nav className="hidden lg:flex items-center gap-10 text-sm font-medium tracking-wide">
-            {links.map((l) => (
-              <NavLink
-                key={l.to}
-                to={l.to}
-                end={l.to === '/'}
-                className={({ isActive }) =>
-                  // Application du vert foncé #43523D
-                  `relative group transition-colors ${
-                    isActive ? 'text-[#43523D]' : 'text-[#43523D]/70 hover:text-[#43523D]'
-                  }`
-                }
-              >
-                {({ isActive }) => (
-                  <>
-                    {l.label}
-                    <span
-                      className={`absolute -bottom-1 left-0 h-px bg-[#43523D] transition-all duration-300 ${
-                        isActive ? 'w-full' : 'w-0 group-hover:w-full'
-                      }`}
-                    />
-                  </>
-                )}
-              </NavLink>
-            ))}
-          </nav>
+  {links.map((l) =>
+    l.to.startsWith('/#') ? (
+      <a
+        key={l.to}
+        href={l.to}
+        className="relative group text-[#43523D]/70 hover:text-[#43523D] transition-colors"
+      >
+        {l.label}
+        <span className="absolute -bottom-1 left-0 h-px bg-[#43523D] w-0 group-hover:w-full transition-all duration-300" />
+      </a>
+    ) : (
+      <NavLink
+        key={l.to}
+        to={l.to}
+        end={l.to === '/'}
+        className={({ isActive }) =>
+          `relative group transition-colors ${
+            isActive ? 'text-[#43523D]' : 'text-[#43523D]/70 hover:text-[#43523D]'
+          }`
+        }
+      >
+        {({ isActive }) => (
+          <>
+            {l.label}
+            <span
+              className={`absolute -bottom-1 left-0 h-px bg-[#43523D] transition-all duration-300 ${
+                isActive ? 'w-full' : 'w-0 group-hover:w-full'
+              }`}
+            />
+          </>
+        )}
+      </NavLink>
+    )
+  )}
+</nav>
 
           <Link
             to="/reservation"
@@ -121,19 +132,40 @@ export default function Header() {
             </button>
           </div>
           <nav className="p-6 flex flex-col gap-1">
-            {links.map((l) => (
-              <NavLink
-                key={l.to}
-                to={l.to}
-                end={l.to === '/'}
-                onClick={() => setMenuOpen(false)}
-                // Les liens du menu mobile
-                className="font-serif text-3xl py-3 border-b border-[#43523D]/20 text-[#43523D]/80 hover:text-[#43523D] transition-colors flex items-center justify-between group"
-              >
-                {l.label}
-                <ArrowUpRight className="w-5 h-5 text-[#43523D] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-              </NavLink>
-            ))}
+            {links.map((l) =>
+              l.to.startsWith('/#') ? (
+                <Link
+                  key={l.to}
+                  to={l.to}
+                  className="relative group text-[#43523D]/70 hover:text-[#43523D] transition-colors"
+                >
+                  {l.label}
+                  <span className="absolute -bottom-1 left-0 h-px bg-[#43523D] w-0 group-hover:w-full transition-all duration-300" />
+                </Link>
+              ) : (
+                <NavLink
+                  key={l.to}
+                  to={l.to}
+                  end={l.to === '/'}
+                  className={({ isActive }) =>
+                    `relative group transition-colors ${
+                      isActive ? 'text-[#43523D]' : 'text-[#43523D]/70 hover:text-[#43523D]'
+                    }`
+                  }
+                >
+                  {({ isActive }) => (
+                    <>
+                      {l.label}
+                      <span
+                        className={`absolute -bottom-1 left-0 h-px bg-[#43523D] transition-all duration-300 ${
+                          isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                        }`}
+                      />
+                    </>
+                  )}
+                </NavLink>
+              )
+            )}
           </nav>
           <div className="absolute bottom-0 inset-x-0 p-6">
             <Link
