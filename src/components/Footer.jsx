@@ -1,5 +1,5 @@
+import { Clock, Facebook, Instagram, Mail, MapPin, MessageCircle, Phone } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { MessageCircle, Instagram, Facebook, Phone, Mail, MapPin, Clock } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -94,16 +94,18 @@ export default function Footer() {
         <div className="pt-8 border-t border-ivoire/15 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-ivoire/60">
           <p>© 2026 Naya Harmonie · Tous droits réservés</p>
           <div className="flex gap-6">
-            <a href="#" className="hover:text-rose-300 transition-colors">
-              Mentions légales
-            </a>
-            <a href="#" className="hover:text-rose-300 transition-colors">
-              Confidentialité
-            </a>
-            <a href="#" className="hover:text-rose-300 transition-colors">
-              CGV
-            </a>
-          </div>
+          <Link to="/Mentionlegales" className="hover:text-rose-300 transition-colors">
+            Mentions légales
+          </Link>
+
+          <Link to="/confidentialite" className="hover:text-rose-300 transition-colors">
+            Confidentialité
+          </Link>
+
+          <Link to="/cgv" className="hover:text-rose-300 transition-colors">
+            CGV
+          </Link>
+        </div>
         </div>
       </div>
     </footer>
