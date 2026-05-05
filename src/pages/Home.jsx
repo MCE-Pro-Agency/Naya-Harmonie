@@ -203,7 +203,7 @@ export default function Home() {
             {/* Pilier 2 — décalé */}
             <article className="reveal md:mt-16 group">
               <div className="card-img aspect-[4/5] rounded-3xl overflow-hidden mb-6 relative">
-                <img src="./images/coach.jpg" alt="Séance de coaching" className="w-full h-full object-cover" />
+                <img src="./images/energie.jpg" alt="Séance de coaching" className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-sauge-900/70 via-transparent to-transparent" />
                 <div className="absolute top-4 left-4 px-3 py-1.5 bg-ivoire/90 backdrop-blur rounded-full">
                   <span className="text-xs font-medium text-sauge-700 tracking-wide">02 / Bien-être</span>
@@ -222,7 +222,7 @@ export default function Home() {
             {/* Pilier 3 */}
             <article className="reveal group">
               <div className="card-img aspect-[4/5] rounded-3xl overflow-hidden mb-6 relative">
-                <img src="./images/profil.jpg" alt="Bienveillance" className="w-full h-full object-cover" />
+                <img src="./images/profil1.jpg" alt="Bienveillance" className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-rose-900/70 via-transparent to-transparent" />
                 <div className="absolute top-4 left-4 px-3 py-1.5 bg-ivoire/90 backdrop-blur rounded-full">
                   <span className="text-xs font-medium text-rose-700 tracking-wide">03 / Sérénité</span>
@@ -252,7 +252,7 @@ export default function Home() {
             <div className="lg:col-span-5 reveal">
               <div className="relative">
                 <div className="aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl">
-                  <img src="./images/profil.jpg" alt="Mariame en séance" className="w-full h-full object-cover" />
+                  <img src="./images/profil.jpeg" alt="Mariame en séance" className="w-full h-full object-cover" />
                 </div>
                 
               </div>
@@ -430,7 +430,7 @@ export default function Home() {
                 </Link>
               </div>
               <div className="aspect-square rounded-2xl overflow-hidden">
-                <img src="./images/profil.jpg" alt="Bien-être féminin" className="w-full h-full object-cover" />
+                <img src="./images/bien-etre.jpg" alt="Bien-être féminin" className="w-full h-full object-cover" />
               </div>
             </article>
           </div>

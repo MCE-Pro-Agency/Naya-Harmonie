@@ -13,10 +13,10 @@ const PROFILS = [
 ];
 
 const SERVICES_LIST = [
-  { id: 'sexo', label: 'Sexothérapie', desc: "Réveiller le désir, explorer l'intimité en confiance", icon: Heart, color: 'rose', img: './images/coach.jpg' },
+  { id: 'sexo', label: 'Sexothérapie', desc: "Réveiller le désir, explorer l'intimité en confiance", icon: Heart, color: 'rose', img: './images/sexualite.jpg' },
   { id: 'couple', label: 'Harmonie de couple', desc: 'Complicité, communication, raviver la flamme', icon: Sparkles, color: 'rose', img: './images/couple.jpg' },
-  { id: 'meno', label: 'Pré/Ménopause', desc: 'Équilibre hormonal, énergie, sérénité', icon: Leaf, color: 'sauge', img: './images/profil.jpg' },
-  { id: 'bien', label: 'Bien-être féminin', desc: 'Reconnexion à son corps et sa féminité', icon: Heart, color: 'sauge', img: './images/coach.jpg' },
+  { id: 'meno', label: 'Pré/Ménopause', desc: 'Équilibre hormonal, énergie, sérénité', icon: Leaf, color: 'sauge', img: './images/menopose.jpg' },
+  { id: 'bien', label: 'Bien-être féminin', desc: 'Reconnexion à son corps et sa féminité', icon: Heart, color: 'sauge', img: './images/bien-etre.jpg' },
 ];
 
 export default function ReservationHeroCarrousel() {
