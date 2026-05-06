@@ -1,6 +1,7 @@
 import { ArrowLeft, ArrowRight, Award, Check, Clock, Heart, Leaf, MessageCircle, Shield, Sparkles } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { SERVICES_DATA } from './Services_Data';
+import { QUESTIONNAIRES_DATA } from './Questionnaires_Data';
 
 const PAYS = [
   { id: 'senegal', label: 'Sénégal', code: 'SN', currency: 'FCFA' },
@@ -25,7 +26,9 @@ export default function ReservationHeroCarrousel() {
   const [activeService, setActiveService] = useState(0);
   const [data, setData] = useState({
     pays: '', type: '', profil: '',
-    nom: '', email: '', tel: '', message: '',
+    nom: '', prenom: '', email: '', tel: '', age: '', message: '',
+    // Réponses du questionnaire
+    questionnaire: {}
   });
 
   // Auto-rotation du carrousel
@@ -49,13 +52,69 @@ export default function ReservationHeroCarrousel() {
     { id: 'bien', label: 'Bien-être féminin', desc: 'Reconnexion à son corps et sa féminité', icon: Heart, color: 'sauge' },
   ];
 
+  // Récupérer le questionnaire du service choisi
+  const currentQuestionnaire = data.type ? QUESTIONNAIRES_DATA[data.type] : null;
+
+  // Vérifier les champs requis du questionnaire
+  const areRequiredFieldsComplete = () => {
+    if (!currentQuestionnaire) return false;
+
+    return currentQuestionnaire.questions.every(q => {
+      if (!q.required) return true;
+
+      if (q.type === 'checkbox') {
+        const selectedValues = data.questionnaire[q.id] || [];
+        return Array.isArray(selectedValues) && selectedValues.length > 0;
+      }
+
+      const value = data.questionnaire[q.id];
+      return value && value.toString().trim() !== '';
+    });
+  };
+
+  // Gérer les changements de réponse
+  const handleQuestionChange = (questionId, value, type) => {
+    if (type === 'checkbox') {
+      const current = data.questionnaire[questionId] || [];
+      const updated = current.includes(value)
+        ? current.filter(v => v !== value)
+        : [...current, value];
+      setData({
+        ...data,
+        questionnaire: { ...data.questionnaire, [questionId]: updated }
+      });
+    } else {
+      setData({
+        ...data,
+        questionnaire: { ...data.questionnaire, [questionId]: value }
+      });
+    }
+  };
+
   const handleReserver = async (e) => {
     e.preventDefault();
-    if (!data.nom || !data.email || !data.tel) return;
+    if (!areRequiredFieldsComplete()) return;
 
     setLoading(true);
 
     try {
+      // Préparer les données du questionnaire pour l'email
+      const questionnairesFormatted = currentQuestionnaire.questions
+        .map(q => {
+          const value = data.questionnaire[q.id];
+          if (q.type === 'select' || q.type === 'checkbox') {
+            if (q.type === 'checkbox' && Array.isArray(value)) {
+              return `${q.label}: ${value.map(v => 
+                q.options.find(opt => opt.value === v)?.label || v
+              ).join(', ')}`;
+            }
+            const selectedOption = q.options.find(opt => opt.value === value);
+            return `${q.label}: ${selectedOption?.label || value}`;
+          }
+          return `${q.label}: ${value}`;
+        })
+        .join('\n');
+
       const response = await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: {
@@ -65,38 +124,41 @@ export default function ReservationHeroCarrousel() {
         body: JSON.stringify({
           from: 'Naya Harmonie <noreply@nayaharmonie.com>',
           to: 'mariame.coulibaly@yahoo.fr',
-          subject: `📅 Nouvelle demande de réservation - ${TYPES.find(t => t.id === data.type)?.label}`,
+          subject: `📋 Nouveau questionnaire - ${TYPES.find(t => t.id === data.type)?.label}`,
           html: `
             <div style="font-family: 'Anthropic Sans', sans-serif; max-width: 600px; margin: 0 auto; color: #3d3d3a;">
               <div style="background: linear-gradient(135deg, #2d5446 0%, #8b5a6b 100%); padding: 40px 20px; text-align: center; border-radius: 12px 12px 0 0;">
-                <h1 style="color: #fff; margin: 0; font-size: 28px;">🌿 Nouvelle Demande de Réservation</h1>
+                <h1 style="color: #fff; margin: 0; font-size: 28px;">📋 Nouveau Questionnaire Reçu</h1>
               </div>
               
               <div style="padding: 40px 20px; background: #f5f5f5;">
                 <div style="background: white; padding: 30px; border-radius: 8px;">
-                  <h2 style="color: #2d5446; margin-top: 0;">Détails de la demande</h2>
+                  <h2 style="color: #2d5446; margin-top: 0;">Informations Personnelles</h2>
                   
                   <div style="margin: 20px 0; padding: 15px; background: #f0f0f0; border-left: 4px solid #d4537e; border-radius: 4px;">
-                    <p style="margin: 5px 0;"><strong>👤 Nom :</strong> ${data.nom}</p>
-                    <p style="margin: 5px 0;"><strong>📧 Email :</strong> ${data.email}</p>
-                    <p style="margin: 5px 0;"><strong>📱 Téléphone :</strong> ${data.tel}</p>
+                    <p style="margin: 5px 0;"><strong>👤 Nom :</strong> ${data.questionnaire['nom']}</p>
+                    <p style="margin: 5px 0;"><strong>👤 Prénom :</strong> ${data.questionnaire['prenom']}</p>
+                    <p style="margin: 5px 0;"><strong>📧 Email :</strong> ${data.questionnaire['mail']}</p>
+                    <p style="margin: 5px 0;"><strong>📱 Téléphone :</strong> ${data.questionnaire['telephone']}</p>
+                    <p style="margin: 5px 0;"><strong>🎂 Âge :</strong> ${data.questionnaire['age']} ans</p>
                   </div>
 
+                  <h2 style="color: #2d5446; margin-top: 30px;">Détails du Service & Accompagnement</h2>
+                  
                   <div style="margin: 20px 0; padding: 15px; background: #f0f0f0; border-left: 4px solid #5a8b6f; border-radius: 4px;">
                     <p style="margin: 5px 0;"><strong>🌍 Localisation :</strong> ${PAYS.find(p => p.id === data.pays)?.label}</p>
                     <p style="margin: 5px 0;"><strong>💚 Service :</strong> ${TYPES.find(t => t.id === data.type)?.label}</p>
                     <p style="margin: 5px 0;"><strong>👥 Profil :</strong> ${PROFILS.find(p => p.id === data.profil)?.label}</p>
                   </div>
 
-                  ${data.message ? `
+                  <h2 style="color: #2d5446; margin-top: 30px;">Réponses au Questionnaire</h2>
+                  
                   <div style="margin: 20px 0; padding: 15px; background: #faf9f7; border-left: 4px solid #f2a623; border-radius: 4px;">
-                    <p style="margin: 5px 0;"><strong>💭 Message :</strong></p>
-                    <p style="margin: 10px 0; color: #555;">${data.message.replace(/\n/g, '<br>')}</p>
+                    <p style="white-space: pre-wrap; color: #555; line-height: 1.8;">${questionnairesFormatted}</p>
                   </div>
-                  ` : ''}
 
                   <div style="margin-top: 30px; padding: 20px; background: #f0fdf4; border: 1px solid #86efac; border-radius: 8px;">
-                    <p style="margin: 0; color: #166534; font-weight: 500;">✅ La cliente a été redirigée vers Calendly pour confirmer son créneau.</p>
+                    <p style="margin: 0; color: #166534; font-weight: 500;">✅ La cliente sera redirigée vers Calendly pour confirmer son créneau.</p>
                   </div>
                 </div>
               </div>
@@ -111,7 +173,7 @@ export default function ReservationHeroCarrousel() {
 
       if (!response.ok) throw new Error('Erreur lors de l\'envoi de l\'email');
 
-      const calendlyUrl = `https://calendly.com/?email=${encodeURIComponent(data.email)}&name=${encodeURIComponent(data.nom)}&service=${data.type}&country=${data.pays}`;
+      const calendlyUrl = `https://calendly.com/?email=${encodeURIComponent(data.questionnaire['mail'])}&name=${encodeURIComponent(data.questionnaire['prenom'])}&service=${data.type}&country=${data.pays}`;
       window.location.href = calendlyUrl;
     } catch (error) {
       console.error('Erreur:', error);
@@ -124,7 +186,7 @@ export default function ReservationHeroCarrousel() {
     (step === 1 && data.pays) ||
     (step === 2 && data.type) ||
     (step === 3 && data.profil) ||
-    (step === 4 && data.nom && data.email && data.tel);
+    (step === 4 && areRequiredFieldsComplete());
 
   const currentService = SERVICES_LIST[activeService];
   const currentServiceData = SERVICES_DATA[currentService.id];
@@ -231,7 +293,7 @@ export default function ReservationHeroCarrousel() {
                   {step === 1 && 'Localisation'}
                   {step === 2 && 'Accompagnement'}
                   {step === 3 && 'Profil'}
-                  {step === 4 && 'Coordonnées'}
+                  {step === 4 && 'Questionnaire'}
                 </p>
               </div>
             </div>
@@ -277,7 +339,7 @@ export default function ReservationHeroCarrousel() {
                       return (
                         <button
                           key={t.id}
-                          onClick={() => setData({ ...data, type: t.id })}
+                          onClick={() => setData({ ...data, type: t.id, questionnaire: {} })}
                           className={`text-left p-5 rounded-2xl border-2 transition-all hover:-translate-y-0.5 ${
                             data.type === t.id
                               ? 'border-sauge-500 bg-sauge-100 shadow-lg'
@@ -330,64 +392,110 @@ export default function ReservationHeroCarrousel() {
                 </div>
               )}
 
-              {/* ÉTAPE 4 - COORDONNÉES */}
-              {step === 4 && (
+              {/* ÉTAPE 4 - QUESTIONNAIRE DYNAMIQUE */}
+              {step === 4 && currentQuestionnaire && (
                 <form onSubmit={handleReserver} className="animate-fade-in">
                   <h2 className="font-serif text-3xl md:text-4xl text-encre mb-2">
-                    Vos <span className="italic text-sauge-700">coordonnées</span>
+                    {currentQuestionnaire.titre}
                   </h2>
-                  <p className="text-sm text-encre-muted mb-8">Pour vous confirmer le rendez-vous dans les 24h.</p>
+                  <p className="text-sm text-encre-muted mb-8">Remplissez ce questionnaire pour affiner votre accompagnement.</p>
 
-                  <div className="space-y-4">
+                  <div className="space-y-6">
+                    {/* Informations Personnelles - Section */}
                     <div>
-                      <label className="block mb-1.5 text-sm font-medium text-encre">Prénom <span className="text-rose-700">*</span></label>
-                      <input
-                        type="text"
-                        placeholder="Marie"
-                        value={data.nom}
-                        onChange={(e) => setData({ ...data, nom: e.target.value })}
-                        className="w-full px-4 py-3.5 rounded-xl border-2 border-sable focus:border-sauge-500 focus:ring-2 focus:ring-sauge-500/20 outline-none transition-all bg-ivoire"
-                        required
-                      />
+                      <h3 className="font-medium text-lg text-encre mb-4 pb-3 border-b-2 border-sauge-200">
+                        ℹ️ Informations Personnelles
+                      </h3>
+                      <div className="space-y-4">
+                        {currentQuestionnaire.questions
+                          .filter(q => q.group === 'infos')
+                          .map(q => (
+                            <div key={q.id}>
+                              <label className="block mb-1.5 text-sm font-medium text-encre">
+                                {q.label}
+                                {q.required && <span className="text-rose-700">*</span>}
+                              </label>
+                              {q.type === 'text' || q.type === 'email' || q.type === 'tel' || q.type === 'number' ? (
+                                <input
+                                  type={q.type}
+                                  placeholder={q.placeholder}
+                                  value={data.questionnaire[q.id] || ''}
+                                  onChange={(e) => handleQuestionChange(q.id, e.target.value, q.type)}
+                                  className="w-full px-4 py-3.5 rounded-xl border-2 border-sable focus:border-sauge-500 focus:ring-2 focus:ring-sauge-500/20 outline-none transition-all bg-ivoire"
+                                  required={q.required}
+                                />
+                              ) : null}
+                            </div>
+                          ))}
+                      </div>
                     </div>
 
+                    {/* Questions Spécifiques au Thème */}
                     <div>
-                      <label className="block mb-1.5 text-sm font-medium text-encre">Email <span className="text-rose-700">*</span></label>
-                      <input
-                        type="email"
-                        placeholder="marie@email.com"
-                        value={data.email}
-                        onChange={(e) => setData({ ...data, email: e.target.value })}
-                        className="w-full px-4 py-3.5 rounded-xl border-2 border-sable focus:border-sauge-500 focus:ring-2 focus:ring-sauge-500/20 outline-none transition-all bg-ivoire"
-                        required
-                      />
+                      <h3 className="font-medium text-lg text-encre mb-4 pb-3 border-b-2 border-rose-200">
+                        💭 Questions relatives à votre accompagnement
+                      </h3>
+                      <div className="space-y-5">
+                        {currentQuestionnaire.questions
+                          .filter(q => q.group === 'theme')
+                          .map(q => (
+                            <div key={q.id}>
+                              <label className="block mb-2.5 text-sm font-medium text-encre">
+                                {q.label}
+                                {q.required && <span className="text-rose-700">*</span>}
+                              </label>
+
+                              {/* Select */}
+                              {q.type === 'select' && (
+                                <select
+                                  value={data.questionnaire[q.id] || ''}
+                                  onChange={(e) => handleQuestionChange(q.id, e.target.value, 'select')}
+                                  className="w-full px-4 py-3.5 rounded-xl border-2 border-sable focus:border-sauge-500 focus:ring-2 focus:ring-sauge-500/20 outline-none transition-all bg-ivoire text-encre"
+                                  required={q.required}
+                                >
+                                  {q.options.map(opt => (
+                                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                                  ))}
+                                </select>
+                              )}
+
+                              {/* Textarea */}
+                              {q.type === 'textarea' && (
+                                <textarea
+                                  placeholder={q.placeholder}
+                                  rows="4"
+                                  value={data.questionnaire[q.id] || ''}
+                                  onChange={(e) => handleQuestionChange(q.id, e.target.value, 'textarea')}
+                                  className="w-full px-4 py-3.5 rounded-xl border-2 border-sable focus:border-sauge-500 focus:ring-2 focus:ring-sauge-500/20 outline-none transition-all bg-ivoire resize-none"
+                                  required={q.required}
+                                />
+                              )}
+
+                              {/* Checkbox */}
+                              {q.type === 'checkbox' && (
+                                <div className="space-y-2.5">
+                                  {q.options.map(opt => (
+                                    <label key={opt.value} className="flex items-center gap-3 cursor-pointer group">
+                                      <input
+                                        type="checkbox"
+                                        checked={(data.questionnaire[q.id] || []).includes(opt.value)}
+                                        onChange={() => handleQuestionChange(q.id, opt.value, 'checkbox')}
+                                        className="w-5 h-5 rounded border-2 border-sable accent-sauge-500 cursor-pointer"
+                                      />
+                                      <span className="text-sm text-encre group-hover:text-sauge-700 transition-colors">
+                                        {opt.label}
+                                      </span>
+                                    </label>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                      </div>
                     </div>
 
-                    <div>
-                      <label className="block mb-1.5 text-sm font-medium text-encre">Téléphone (WhatsApp) <span className="text-rose-700">*</span></label>
-                      <input
-                        type="tel"
-                        placeholder="+221 77 ... ou +33 6 ..."
-                        value={data.tel}
-                        onChange={(e) => setData({ ...data, tel: e.target.value })}
-                        className="w-full px-4 py-3.5 rounded-xl border-2 border-sable focus:border-sauge-500 focus:ring-2 focus:ring-sauge-500/20 outline-none transition-all bg-ivoire"
-                        required
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block mb-1.5 text-sm font-medium text-encre">Un message ? (optionnel)</label>
-                      <textarea
-                        placeholder="Partagez ce qui vous amène, vos attentes..."
-                        rows="4"
-                        value={data.message}
-                        onChange={(e) => setData({ ...data, message: e.target.value })}
-                        className="w-full px-4 py-3.5 rounded-xl border-2 border-sable focus:border-sauge-500 focus:ring-2 focus:ring-sauge-500/20 outline-none transition-all bg-ivoire resize-none"
-                      />
-                    </div>
-
-                    <p className="text-xs text-encre-muted leading-relaxed pt-2">
-                      En soumettant ce formulaire, vous acceptez d'être contactée par Mariame. Vos données restent strictement confidentielles.
+                    <p className="text-xs text-encre-muted leading-relaxed pt-4 border-t border-sable">
+                      📋 Vos réponses nous aident à mieux vous accompagner. Vos données restent strictement confidentielles.
                     </p>
                   </div>
                 </form>
@@ -420,7 +528,7 @@ export default function ReservationHeroCarrousel() {
               ) : (
                 <button
                   onClick={handleReserver}
-                  disabled={!data.nom || !data.email || !data.tel || loading}
+                  disabled={!areRequiredFieldsComplete() || loading}
                   className="btn-primary px-8 py-3 rounded-full text-sm font-medium disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-2"
                 >
                   <span>{loading ? 'Envoi...' : 'Réserver sur Calendly'}</span>
