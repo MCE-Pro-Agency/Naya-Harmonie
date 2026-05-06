@@ -1,11 +1,7 @@
-// ReservationHeroCarrousel_Solution1_BookingID.jsx
-// SOLUTION 1: Ajouter Booking ID simple (recommandé pour démarrer)
-
 import { ArrowLeft, ArrowRight, Award, Check, Clock, Heart, Leaf, MessageCircle, Shield, Sparkles } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { SERVICES_DATA } from './Services_Data';
 import { QUESTIONNAIRES_DATA } from './Questionnaires_Data';
-import { v4 as uuidv4 } from 'uuid'; // npm install uuid
 
 const PAYS = [
   { id: 'senegal', label: 'Sénégal', code: 'SN', currency: 'FCFA' },
@@ -30,9 +26,12 @@ export default function ReservationHeroCarrousel() {
   const [activeService, setActiveService] = useState(0);
   const [data, setData] = useState({
     pays: '', type: '', profil: '',
+    nom: '', prenom: '', email: '', tel: '', age: '', message: '',
+    // Réponses du questionnaire
     questionnaire: {}
   });
 
+  // Auto-rotation du carrousel
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveService((prev) => (prev + 1) % SERVICES_LIST.length);
@@ -53,21 +52,27 @@ export default function ReservationHeroCarrousel() {
     { id: 'bien', label: 'Bien-être féminin', desc: 'Reconnexion à son corps et sa féminité', icon: Heart, color: 'sauge' },
   ];
 
+  // Récupérer le questionnaire du service choisi
   const currentQuestionnaire = data.type ? QUESTIONNAIRES_DATA[data.type] : null;
 
+  // Vérifier les champs requis du questionnaire
   const areRequiredFieldsComplete = () => {
     if (!currentQuestionnaire) return false;
+
     return currentQuestionnaire.questions.every(q => {
       if (!q.required) return true;
+
       if (q.type === 'checkbox') {
         const selectedValues = data.questionnaire[q.id] || [];
         return Array.isArray(selectedValues) && selectedValues.length > 0;
       }
+
       const value = data.questionnaire[q.id];
       return value && value.toString().trim() !== '';
     });
   };
 
+  // Gérer les changements de réponse
   const handleQuestionChange = (questionId, value, type) => {
     if (type === 'checkbox') {
       const current = data.questionnaire[questionId] || [];
@@ -93,10 +98,6 @@ export default function ReservationHeroCarrousel() {
     setLoading(true);
 
     try {
-      // 🔑 GÉNÉRER UN ID UNIQUE POUR CETTE RÉSERVATION
-      const bookingId = uuidv4().substring(0, 8).toUpperCase();
-      console.log('📋 Booking ID généré:', bookingId);
-
       // Préparer les données du questionnaire pour l'email
       const questionnairesFormatted = currentQuestionnaire.questions
         .map(q => {
@@ -132,19 +133,7 @@ export default function ReservationHeroCarrousel() {
               
               <div style="padding: 40px 20px; background: #f5f5f5;">
                 <div style="background: white; padding: 30px; border-radius: 8px;">
-                  
-                  <!-- 🆔 BOOKING ID EN ÉVIDENCE -->
-                  <div style="background: #fff3cd; padding: 20px; border-radius: 8px; margin-bottom: 30px; border-left: 4px solid #ffc107;">
-                    <p style="margin: 0 0 10px 0; color: #856404; font-weight: bold; font-size: 12px;">BOOKING ID (pour matcher avec Calendly)</p>
-                    <p style="margin: 0; color: #333; font-size: 24px; letter-spacing: 3px; font-weight: bold; font-family: monospace;">
-                      ${bookingId}
-                    </p>
-                    <p style="margin: 10px 0 0 0; color: #856404; font-size: 11px;">
-                      ⚠️ Vous recevrez un 2e email de Calendly avec la date/heure réservée. Cherchez "${bookingId}" dans cet email pour matcher les 2.
-                    </p>
-                  </div>
-
-                  <h2 style="color: #2d5446; margin-top: 0; margin-bottom: 20px;">Informations Personnelles</h2>
+                  <h2 style="color: #2d5446; margin-top: 0;">Informations Personnelles</h2>
                   
                   <div style="margin: 20px 0; padding: 15px; background: #f0f0f0; border-left: 4px solid #d4537e; border-radius: 4px;">
                     <p style="margin: 5px 0;"><strong>👤 Nom :</strong> ${data.questionnaire['nom']}</p>
@@ -154,7 +143,7 @@ export default function ReservationHeroCarrousel() {
                     <p style="margin: 5px 0;"><strong>🎂 Âge :</strong> ${data.questionnaire['age']} ans</p>
                   </div>
 
-                  <h2 style="color: #2d5446; margin-top: 30px; margin-bottom: 20px;">Service & Accompagnement</h2>
+                  <h2 style="color: #2d5446; margin-top: 30px;">Détails du Service & Accompagnement</h2>
                   
                   <div style="margin: 20px 0; padding: 15px; background: #f0f0f0; border-left: 4px solid #5a8b6f; border-radius: 4px;">
                     <p style="margin: 5px 0;"><strong>🌍 Localisation :</strong> ${PAYS.find(p => p.id === data.pays)?.label}</p>
@@ -162,25 +151,14 @@ export default function ReservationHeroCarrousel() {
                     <p style="margin: 5px 0;"><strong>👥 Profil :</strong> ${PROFILS.find(p => p.id === data.profil)?.label}</p>
                   </div>
 
-                  <h2 style="color: #2d5446; margin-top: 30px; margin-bottom: 20px;">Réponses au Questionnaire</h2>
+                  <h2 style="color: #2d5446; margin-top: 30px;">Réponses au Questionnaire</h2>
                   
                   <div style="margin: 20px 0; padding: 15px; background: #faf9f7; border-left: 4px solid #f2a623; border-radius: 4px;">
-                    <p style="white-space: pre-wrap; color: #555; line-height: 1.8; margin: 0;">${questionnairesFormatted}</p>
+                    <p style="white-space: pre-wrap; color: #555; line-height: 1.8;">${questionnairesFormatted}</p>
                   </div>
 
                   <div style="margin-top: 30px; padding: 20px; background: #f0fdf4; border: 1px solid #86efac; border-radius: 8px;">
-                    <p style="margin: 0; color: #166534; font-weight: 500;">✅ La cliente a été redirigée vers Calendly pour confirmer son créneau.</p>
-                  </div>
-
-                  <!-- INSTRUCTIONS POUR NAYA -->
-                  <div style="margin-top: 30px; padding: 20px; background: #e7f3ff; border: 1px solid #b3d9ff; border-radius: 8px;">
-                    <h3 style="margin: 0 0 10px 0; color: #0066cc; font-size: 14px;">📌 À FAIRE:</h3>
-                    <ol style="margin: 0; padding-left: 20px; color: #0066cc; font-size: 13px;">
-                      <li>La cliente va recevoir un email de Calendly</li>
-                      <li>Cet email contiendra la date/heure réservée</li>
-                      <li>Cherchez "<strong>${bookingId}</strong>" dans cet email pour matcher</li>
-                      <li>Vous aurez alors: Questionnaire complet + Créneau réservé ✅</li>
-                    </ol>
+                    <p style="margin: 0; color: #166534; font-weight: 500;">✅ La cliente sera redirigée vers Calendly pour confirmer son créneau.</p>
                   </div>
                 </div>
               </div>
@@ -195,12 +173,7 @@ export default function ReservationHeroCarrousel() {
 
       if (!response.ok) throw new Error('Erreur lors de l\'envoi de l\'email');
 
-      // 📅 CONSTRUIRE URL CALENDLY AVEC LE BOOKING ID
-      const calendlyUrl = `https://calendly.com/?email=${encodeURIComponent(data.questionnaire['mail'])}&name=${encodeURIComponent(data.questionnaire['prenom'])}&service=${data.type}&country=${data.pays}&booking_id=${bookingId}`;
-      
-      // Afficher le Booking ID au client avant redirection
-      alert(`✅ Questionnaire envoyé!\n\n🆔 Votre numéro de référence:\n${bookingId}\n\nVous allez être redirigé vers Calendly...`);
-      
+      const calendlyUrl = `https://calendly.com/?email=${encodeURIComponent(data.questionnaire['mail'])}&name=${encodeURIComponent(data.questionnaire['prenom'])}&service=${data.type}&country=${data.pays}`;
       window.location.href = calendlyUrl;
     } catch (error) {
       console.error('Erreur:', error);
@@ -220,9 +193,11 @@ export default function ReservationHeroCarrousel() {
 
   return (
     <>
-      {/* HERO CARROUSEL */}
+      {/* HERO CARROUSEL - FULL WIDTH */}
       <section className="min-h-screen relative bg-ivoire overflow-hidden pt-24">
+        {/* Carrousel Container */}
         <div className="relative w-full h-screen flex items-center">
+          {/* Image Background */}
           <div className="absolute inset-0 w-full h-full">
             <img
               src={currentService.img}
@@ -232,6 +207,7 @@ export default function ReservationHeroCarrousel() {
             <div className="absolute inset-0 bg-gradient-to-r from-sauge-900/80 via-sauge-900/60 to-transparent" />
           </div>
 
+          {/* Contenu */}
           <div className="relative z-10 w-full px-6 lg:px-10 max-w-7xl mx-auto">
             <div className="max-w-2xl">
               <span className="inline-block px-4 py-2 rounded-full bg-rose-300/30 text-rose-300 text-xs font-medium uppercase tracking-wider mb-6 reveal">
@@ -246,6 +222,7 @@ export default function ReservationHeroCarrousel() {
                 {currentServiceData.description}
               </p>
 
+              {/* Carrousel Controls */}
               <div className="flex items-center gap-6 reveal">
                 <button
                   onClick={prevService}
@@ -274,6 +251,7 @@ export default function ReservationHeroCarrousel() {
                 </button>
               </div>
 
+              {/* Info Badge */}
               <div className="mt-12 pt-12 border-t border-ivoire/20 flex flex-wrap gap-x-8 gap-y-3">
                 <div className="flex items-center gap-2">
                   <Award className="w-5 h-5 text-rose-300" />
@@ -297,6 +275,7 @@ export default function ReservationHeroCarrousel() {
       <section className="py-16 lg:py-24 bg-ivoire">
         <div className="max-w-3xl mx-auto px-6 lg:px-10">
           <div className="bg-ivoire-cream rounded-3xl shadow-xl border border-sable overflow-hidden" style={{ background: '#EEF1E6' }}>
+            {/* Progress */}
             <div className="px-8 pt-8 pb-6 border-b border-sable">
               <div className="flex items-center gap-2 mb-3">
                 {[1, 2, 3, 4].map((n) => (
@@ -320,6 +299,7 @@ export default function ReservationHeroCarrousel() {
             </div>
 
             <div className="p-8 lg:p-10">
+              {/* ÉTAPE 1 - PAYS */}
               {step === 1 && (
                 <div className="animate-fade-in">
                   <h2 className="font-serif text-3xl md:text-4xl text-encre mb-2">
@@ -346,12 +326,13 @@ export default function ReservationHeroCarrousel() {
                 </div>
               )}
 
+              {/* ÉTAPE 2 - SERVICE */}
               {step === 2 && (
                 <div className="animate-fade-in">
                   <h2 className="font-serif text-3xl md:text-4xl text-encre mb-2">
                     Quel <span className="italic text-sauge-700">accompagnement</span> ?
                   </h2>
-                  <p className="text-sm text-encre-muted mb-8">Choisissez ce qui vous parle le plus.</p>
+                  <p className="text-sm text-encre-muted mb-8">Choisissez ce qui vous parle le plus. Vous avez découvert les services ci-dessus.</p>
                   <div className="grid sm:grid-cols-2 gap-3">
                     {TYPES.map((t) => {
                       const Icon = t.icon;
@@ -383,6 +364,7 @@ export default function ReservationHeroCarrousel() {
                 </div>
               )}
 
+              {/* ÉTAPE 3 - PROFIL */}
               {step === 3 && (
                 <div className="animate-fade-in">
                   <h2 className="font-serif text-3xl md:text-4xl text-encre mb-2">
@@ -410,6 +392,7 @@ export default function ReservationHeroCarrousel() {
                 </div>
               )}
 
+              {/* ÉTAPE 4 - QUESTIONNAIRE DYNAMIQUE */}
               {step === 4 && currentQuestionnaire && (
                 <form onSubmit={handleReserver} className="animate-fade-in">
                   <h2 className="font-serif text-3xl md:text-4xl text-encre mb-2">
@@ -418,6 +401,7 @@ export default function ReservationHeroCarrousel() {
                   <p className="text-sm text-encre-muted mb-8">Remplissez ce questionnaire pour affiner votre accompagnement.</p>
 
                   <div className="space-y-6">
+                    {/* Informations Personnelles - Section */}
                     <div>
                       <h3 className="font-medium text-lg text-encre mb-4 pb-3 border-b-2 border-sauge-200">
                         ℹ️ Informations Personnelles
@@ -446,6 +430,7 @@ export default function ReservationHeroCarrousel() {
                       </div>
                     </div>
 
+                    {/* Questions Spécifiques au Thème */}
                     <div>
                       <h3 className="font-medium text-lg text-encre mb-4 pb-3 border-b-2 border-rose-200">
                         💭 Questions relatives à votre accompagnement
@@ -460,6 +445,7 @@ export default function ReservationHeroCarrousel() {
                                 {q.required && <span className="text-rose-700">*</span>}
                               </label>
 
+                              {/* Select */}
                               {q.type === 'select' && (
                                 <select
                                   value={data.questionnaire[q.id] || ''}
@@ -473,6 +459,7 @@ export default function ReservationHeroCarrousel() {
                                 </select>
                               )}
 
+                              {/* Textarea */}
                               {q.type === 'textarea' && (
                                 <textarea
                                   placeholder={q.placeholder}
@@ -484,6 +471,7 @@ export default function ReservationHeroCarrousel() {
                                 />
                               )}
 
+                              {/* Checkbox */}
                               {q.type === 'checkbox' && (
                                 <div className="space-y-2.5">
                                   {q.options.map(opt => (
@@ -514,6 +502,7 @@ export default function ReservationHeroCarrousel() {
               )}
             </div>
 
+            {/* Navigation footer */}
             <div className="px-8 lg:px-10 py-6 bg-ivoire border-t border-sable flex items-center justify-between">
               {step > 1 ? (
                 <button
@@ -549,13 +538,14 @@ export default function ReservationHeroCarrousel() {
             </div>
           </div>
 
+          {/* INFO RAPIDE */}
           <div className="mt-10 grid sm:grid-cols-3 gap-4 reveal">
             <div className="text-center p-5">
               <div className="w-12 h-12 rounded-full bg-rose-300/30 flex items-center justify-center mx-auto mb-3">
                 <Clock className="w-5 h-5 text-rose-700" />
               </div>
-              <p className="font-serif text-lg text-encre mb-1">Réunion</p>
-              <p className="text-xs text-encre-muted">À distance</p>
+              <p className="font-serif text-lg text-encre mb-1">Reunion</p>
+              <p className="text-xs text-encre-muted">A distance</p>
             </div>
             <div className="text-center p-5">
               <div className="w-12 h-12 rounded-full bg-sauge-100 flex items-center justify-center mx-auto mb-3">
