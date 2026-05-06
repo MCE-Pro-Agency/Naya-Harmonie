@@ -14,10 +14,10 @@ const PROFILS = [
 ];
 
 const SERVICES_LIST = [
-  { id: 'sexo', label: 'Sexothérapie', desc: "Réveiller le désir, explorer l'intimité en confiance", icon: Heart, color: 'rose', img: './images/sexualite.jpg' },
+  { id: 'sexo', label: 'Sexothérapie', desc: "Réveiller le désir, explorer l'intimité en confiance", icon: Heart, color: 'rose', img: './images/coach.jpg' },
   { id: 'couple', label: 'Harmonie de couple', desc: 'Complicité, communication, raviver la flamme', icon: Sparkles, color: 'rose', img: './images/couple.jpg' },
-  { id: 'meno', label: 'Pré/Ménopause', desc: 'Équilibre hormonal, énergie, sérénité', icon: Leaf, color: 'sauge', img: './images/menopose.jpg' },
-  { id: 'bien', label: 'Bien-être féminin', desc: 'Reconnexion à son corps et sa féminité', icon: Heart, color: 'sauge', img: './images/bien-etre.jpg' },
+  { id: 'meno', label: 'Pré/Ménopause', desc: 'Équilibre hormonal, énergie, sérénité', icon: Leaf, color: 'sauge', img: './images/profil.jpg' },
+  { id: 'bien', label: 'Bien-être féminin', desc: 'Reconnexion à son corps et sa féminité', icon: Heart, color: 'sauge', img: './images/coach.jpg' },
 ];
 
 export default function ReservationHeroCarrousel() {
@@ -392,110 +392,64 @@ export default function ReservationHeroCarrousel() {
                 </div>
               )}
 
-              {/* ÉTAPE 4 - QUESTIONNAIRE DYNAMIQUE */}
-              {step === 4 && currentQuestionnaire && (
+              {/* ÉTAPE 4 - COORDONNÉES */}
+              {step === 4 && (
                 <form onSubmit={handleReserver} className="animate-fade-in">
                   <h2 className="font-serif text-3xl md:text-4xl text-encre mb-2">
-                    {currentQuestionnaire.titre}
+                    Vos <span className="italic text-sauge-700">coordonnées</span>
                   </h2>
-                  <p className="text-sm text-encre-muted mb-8">Remplissez ce questionnaire pour affiner votre accompagnement.</p>
+                  <p className="text-sm text-encre-muted mb-8">Pour vous confirmer le rendez-vous dans les 24h.</p>
 
-                  <div className="space-y-6">
-                    {/* Informations Personnelles - Section */}
+                  <div className="space-y-4">
                     <div>
-                      <h3 className="font-medium text-lg text-encre mb-4 pb-3 border-b-2 border-sauge-200">
-                        ℹ️ Informations Personnelles
-                      </h3>
-                      <div className="space-y-4">
-                        {currentQuestionnaire.questions
-                          .filter(q => q.group === 'infos')
-                          .map(q => (
-                            <div key={q.id}>
-                              <label className="block mb-1.5 text-sm font-medium text-encre">
-                                {q.label}
-                                {q.required && <span className="text-rose-700">*</span>}
-                              </label>
-                              {q.type === 'text' || q.type === 'email' || q.type === 'tel' || q.type === 'number' ? (
-                                <input
-                                  type={q.type}
-                                  placeholder={q.placeholder}
-                                  value={data.questionnaire[q.id] || ''}
-                                  onChange={(e) => handleQuestionChange(q.id, e.target.value, q.type)}
-                                  className="w-full px-4 py-3.5 rounded-xl border-2 border-sable focus:border-sauge-500 focus:ring-2 focus:ring-sauge-500/20 outline-none transition-all bg-ivoire"
-                                  required={q.required}
-                                />
-                              ) : null}
-                            </div>
-                          ))}
-                      </div>
+                      <label className="block mb-1.5 text-sm font-medium text-encre">Prénom <span className="text-rose-700">*</span></label>
+                      <input
+                        type="text"
+                        placeholder="Marie"
+                        value={data.nom}
+                        onChange={(e) => setData({ ...data, nom: e.target.value })}
+                        className="w-full px-4 py-3.5 rounded-xl border-2 border-sable focus:border-sauge-500 focus:ring-2 focus:ring-sauge-500/20 outline-none transition-all bg-ivoire"
+                        required
+                      />
                     </div>
 
-                    {/* Questions Spécifiques au Thème */}
                     <div>
-                      <h3 className="font-medium text-lg text-encre mb-4 pb-3 border-b-2 border-rose-200">
-                        💭 Questions relatives à votre accompagnement
-                      </h3>
-                      <div className="space-y-5">
-                        {currentQuestionnaire.questions
-                          .filter(q => q.group === 'theme')
-                          .map(q => (
-                            <div key={q.id}>
-                              <label className="block mb-2.5 text-sm font-medium text-encre">
-                                {q.label}
-                                {q.required && <span className="text-rose-700">*</span>}
-                              </label>
-
-                              {/* Select */}
-                              {q.type === 'select' && (
-                                <select
-                                  value={data.questionnaire[q.id] || ''}
-                                  onChange={(e) => handleQuestionChange(q.id, e.target.value, 'select')}
-                                  className="w-full px-4 py-3.5 rounded-xl border-2 border-sable focus:border-sauge-500 focus:ring-2 focus:ring-sauge-500/20 outline-none transition-all bg-ivoire text-encre"
-                                  required={q.required}
-                                >
-                                  {q.options.map(opt => (
-                                    <option key={opt.value} value={opt.value}>{opt.label}</option>
-                                  ))}
-                                </select>
-                              )}
-
-                              {/* Textarea */}
-                              {q.type === 'textarea' && (
-                                <textarea
-                                  placeholder={q.placeholder}
-                                  rows="4"
-                                  value={data.questionnaire[q.id] || ''}
-                                  onChange={(e) => handleQuestionChange(q.id, e.target.value, 'textarea')}
-                                  className="w-full px-4 py-3.5 rounded-xl border-2 border-sable focus:border-sauge-500 focus:ring-2 focus:ring-sauge-500/20 outline-none transition-all bg-ivoire resize-none"
-                                  required={q.required}
-                                />
-                              )}
-
-                              {/* Checkbox */}
-                              {q.type === 'checkbox' && (
-                                <div className="space-y-2.5">
-                                  {q.options.map(opt => (
-                                    <label key={opt.value} className="flex items-center gap-3 cursor-pointer group">
-                                      <input
-                                        type="checkbox"
-                                        checked={(data.questionnaire[q.id] || []).includes(opt.value)}
-                                        onChange={() => handleQuestionChange(q.id, opt.value, 'checkbox')}
-                                        className="w-5 h-5 rounded border-2 border-sable accent-sauge-500 cursor-pointer"
-                                      />
-                                      <span className="text-sm text-encre group-hover:text-sauge-700 transition-colors">
-                                        {opt.label}
-                                      </span>
-                                    </label>
-                                  ))}
-                                </div>
-                              )}
-                            </div>
-                          ))}
-                      </div>
+                      <label className="block mb-1.5 text-sm font-medium text-encre">Email <span className="text-rose-700">*</span></label>
+                      <input
+                        type="email"
+                        placeholder="marie@email.com"
+                        value={data.email}
+                        onChange={(e) => setData({ ...data, email: e.target.value })}
+                        className="w-full px-4 py-3.5 rounded-xl border-2 border-sable focus:border-sauge-500 focus:ring-2 focus:ring-sauge-500/20 outline-none transition-all bg-ivoire"
+                        required
+                      />
                     </div>
 
-                    <p className="text-xs text-encre-muted leading-relaxed pt-4 border-t border-sable">
-                      📋 Vos réponses nous aident à mieux vous accompagner. Vos données restent strictement confidentielles.
+                    <div>
+                      <label className="block mb-1.5 text-sm font-medium text-encre">Téléphone (WhatsApp) <span className="text-rose-700">*</span></label>
+                      <input
+                        type="tel"
+                        placeholder="+221 77 ... ou +33 6 ..."
+                        value={data.tel}
+                        onChange={(e) => setData({ ...data, tel: e.target.value })}
+                        className="w-full px-4 py-3.5 rounded-xl border-2 border-sable focus:border-sauge-500 focus:ring-2 focus:ring-sauge-500/20 outline-none transition-all bg-ivoire"
+                        required
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block mb-1.5 text-sm font-medium text-encre">Un message ? (optionnel)</label>
+                      <textarea
+                        placeholder="Partagez ce qui vous amène, vos attentes..."
+                        rows="4"
+                        value={data.message}
+                        onChange={(e) => setData({ ...data, message: e.target.value })}
+                        className="w-full px-4 py-3.5 rounded-xl border-2 border-sable focus:border-sauge-500 focus:ring-2 focus:ring-sauge-500/20 outline-none transition-all bg-ivoire resize-none"
+                      />
+                    </div>
+
+                    <p className="text-xs text-encre-muted leading-relaxed pt-2">
+                      En soumettant ce formulaire, vous acceptez d'être contactée par Mariame. Vos données restent strictement confidentielles.
                     </p>
                   </div>
                 </form>
