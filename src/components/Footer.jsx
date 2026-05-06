@@ -57,12 +57,12 @@ export default function Footer() {
               </li>
               <li>
                 <Link to="/blog" className="hover:text-rose-300 transition-colors">
-                  Journal
+                  Blog
                 </Link>
               </li>
               <li>
                 <Link to="/reservation" className="hover:text-rose-300 transition-colors">
-                  Rendez-vous
+                  Coaching
                 </Link>
               </li>
             </ul>

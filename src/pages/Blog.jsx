@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Clock, Search, Calendar, User } from 'lucide-react';
+import { ArrowRight, Clock, Search, Calendar } from 'lucide-react';
 
 const ARTICLES = [
   {
@@ -11,7 +11,7 @@ const ARTICLES = [
     date: '15 avril 2026',
     title: '5 plantes pour traverser la ménopause en douceur',
     desc: "Découvrez les alliées naturelles qui accompagnent les bouleversements hormonaux et apaisent les symptômes courants de la ménopause.",
-    img: './images/profil.jpg',
+    img: './images/menopose.jpg',
     featured: true,
   },
   {
@@ -22,7 +22,7 @@ const ARTICLES = [
     date: '8 avril 2026',
     title: 'Raviver le désir après plusieurs années de mariage',
     desc: "Trois rituels simples mais puissants pour réveiller la complicité, redécouvrir l'autre et retrouver la magie des premiers temps.",
-    img: './images/couple.jpg',
+    img: './images/ensemble.jpg',
   },
   {
     id: 3,
@@ -32,7 +32,7 @@ const ARTICLES = [
     date: '2 avril 2026',
     title: "Le moringa, l'arbre de vie des femmes",
     desc: "Pourquoi cette plante africaine ancestrale est-elle si précieuse pour la santé hormonale féminine et l'énergie au quotidien ?",
-    img: './images/coach.jpg',
+    img: './images/energie.jpg',
   },
   {
     id: 4,
@@ -42,7 +42,7 @@ const ARTICLES = [
     date: '25 mars 2026',
     title: 'Communiquer ses désirs sans tabou avec son partenaire',
     desc: "Comment ouvrir le dialogue sur l'intimité sans gêne, dans la bienveillance et le respect mutuel.",
-    img: './images/couple.jpg',
+    img: './images/sexualite.jpg',
   },
   {
     id: 5,
@@ -52,7 +52,7 @@ const ARTICLES = [
     date: '18 mars 2026',
     title: 'Le rituel beauté au karité que toutes les femmes devraient connaître',
     desc: "Un soin ancestral du Sénégal pour nourrir la peau et les cheveux en profondeur. Recette transmise de génération en génération.",
-    img: './images/profil.jpg',
+    img: './images/bien.jpg',
   },
   {
     id: 6,
@@ -62,7 +62,7 @@ const ARTICLES = [
     date: '10 mars 2026',
     title: 'Bouffées de chaleur : comprendre et apaiser naturellement',
     desc: "Les mécanismes hormonaux derrière les bouffées et les solutions naturelles qui ont fait leurs preuves.",
-    img: './images/coach.jpg',
+    img: './images/menopose.jpg',
   },
 ];
 
@@ -78,13 +78,23 @@ export default function Blog() {
   const [activeCat, setActiveCat] = useState('all');
   const [search, setSearch] = useState('');
 
-  const filtered = ARTICLES.filter((a) => {
-    if (activeCat !== 'all' && a.cat !== activeCat) return false;
-    if (search && !a.title.toLowerCase().includes(search.toLowerCase()) && !a.desc.toLowerCase().includes(search.toLowerCase())) return false;
-    return true;
+  // Filtrage corrigé
+  const filtered = ARTICLES.filter((article) => {
+    // Filtre par catégorie
+    const matchCategory = activeCat === 'all' || article.cat === activeCat;
+    
+    // Filtre par recherche
+    const searchLower = search.toLowerCase().trim();
+    const matchSearch = !searchLower || 
+      article.title.toLowerCase().includes(searchLower) || 
+      article.desc.toLowerCase().includes(searchLower);
+    
+    return matchCategory && matchSearch;
   });
 
-  const featured = ARTICLES.find((a) => a.featured);
+  // Affiche l'article featured SEULEMENT quand on est sur "all" et sans recherche
+  const showFeatured = activeCat === 'all' && search.trim() === '';
+  const featured = showFeatured ? ARTICLES.find((a) => a.featured) : null;
 
   return (
     <>
@@ -109,7 +119,7 @@ export default function Blog() {
       </section>
 
       {/* ARTICLE FEATURED */}
-      {featured && activeCat === 'all' && !search && (
+      {featured && (
         <section className="py-12 lg:py-20 bg-ivoire">
           <div className="max-w-7xl mx-auto px-6 lg:px-10">
             <div className="reveal">
@@ -181,6 +191,7 @@ export default function Blog() {
               onChange={(e) => setSearch(e.target.value)}
               className="w-full pl-11 pr-4 py-2.5 rounded-full border border-sable focus:border-sauge-500 focus:ring-2 focus:ring-sauge-500/20 outline-none transition-all text-sm"
               style={{ background: '#EEF1E6' }}
+              aria-label="Rechercher un article"
             />
           </div>
         </div>
@@ -199,7 +210,7 @@ export default function Blog() {
                   setActiveCat('all');
                   setSearch('');
                 }}
-                className="text-sauge-700 underline"
+                className="text-sauge-700 underline hover:text-sauge-900"
               >
                 Voir tous les articles
               </button>
@@ -209,7 +220,7 @@ export default function Blog() {
               {filtered.map((a, i) => (
                 <Link
                   key={a.id}
-                  to="#"
+                  to={`/article/${a.id}`}
                   className={`reveal group cursor-pointer ${i === 1 ? 'md:mt-8' : ''}`}
                   style={{ animationDelay: `${i * 80}ms` }}
                 >
