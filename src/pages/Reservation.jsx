@@ -332,66 +332,231 @@ export default function ReservationHeroCarrousel() {
 
               {/* ÉTAPE 4 - COORDONNÉES */}
               {step === 4 && (
-                <form onSubmit={handleReserver} className="animate-fade-in">
-                  <h2 className="font-serif text-3xl md:text-4xl text-encre mb-2">
-                    Vos <span className="italic text-sauge-700">coordonnées</span>
-                  </h2>
-                  <p className="text-sm text-encre-muted mb-8">Pour vous confirmer le rendez-vous dans les 24h.</p>
+  <form onSubmit={handleReserver} className="animate-fade-in">
 
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block mb-1.5 text-sm font-medium text-encre">Prénom <span className="text-rose-700">*</span></label>
-                      <input
-                        type="text"
-                        placeholder="Marie"
-                        value={data.nom}
-                        onChange={(e) => setData({ ...data, nom: e.target.value })}
-                        className="w-full px-4 py-3.5 rounded-xl border-2 border-sable focus:border-sauge-500 focus:ring-2 focus:ring-sauge-500/20 outline-none transition-all bg-ivoire"
-                        required
-                      />
-                    </div>
+    <h2 className="font-serif text-3xl md:text-4xl text-encre mb-2">
+      Questionnaire <span className="italic text-sauge-700">préliminaire</span>
+    </h2>
 
-                    <div>
-                      <label className="block mb-1.5 text-sm font-medium text-encre">Email <span className="text-rose-700">*</span></label>
-                      <input
-                        type="email"
-                        placeholder="marie@email.com"
-                        value={data.email}
-                        onChange={(e) => setData({ ...data, email: e.target.value })}
-                        className="w-full px-4 py-3.5 rounded-xl border-2 border-sable focus:border-sauge-500 focus:ring-2 focus:ring-sauge-500/20 outline-none transition-all bg-ivoire"
-                        required
-                      />
-                    </div>
+    <p className="text-sm text-encre-muted mb-8">
+      Merci de répondre à ces quelques questions avant votre appel.
+    </p>
 
-                    <div>
-                      <label className="block mb-1.5 text-sm font-medium text-encre">Téléphone (WhatsApp) <span className="text-rose-700">*</span></label>
-                      <input
-                        type="tel"
-                        placeholder="+221 77 ... ou +33 6 ..."
-                        value={data.tel}
-                        onChange={(e) => setData({ ...data, tel: e.target.value })}
-                        className="w-full px-4 py-3.5 rounded-xl border-2 border-sable focus:border-sauge-500 focus:ring-2 focus:ring-sauge-500/20 outline-none transition-all bg-ivoire"
-                        required
-                      />
-                    </div>
+    <div className="space-y-6">
 
-                    <div>
-                      <label className="block mb-1.5 text-sm font-medium text-encre">Un message ? (optionnel)</label>
-                      <textarea
-                        placeholder="Partagez ce qui vous amène, vos attentes..."
-                        rows="4"
-                        value={data.message}
-                        onChange={(e) => setData({ ...data, message: e.target.value })}
-                        className="w-full px-4 py-3.5 rounded-xl border-2 border-sable focus:border-sauge-500 focus:ring-2 focus:ring-sauge-500/20 outline-none transition-all bg-ivoire resize-none"
-                      />
-                    </div>
+      {/* PROFIL */}
+      <div className="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label className="block mb-1.5 text-sm font-medium text-encre">Âge</label>
+          <input
+            type="text"
+            value={data.questionnaire?.age || ''}
+            onChange={(e) =>
+              setData({
+                ...data,
+                questionnaire: { ...data.questionnaire, age: e.target.value }
+              })
+            }
+            className="w-full px-4 py-3.5 rounded-xl border-2 border-sable focus:border-sauge-500 focus:ring-2 focus:ring-sauge-500/20 outline-none transition-all bg-ivoire"
+          />
+        </div>
 
-                    <p className="text-xs text-encre-muted leading-relaxed pt-2">
-                      En soumettant ce formulaire, vous acceptez d'être contactée par Mariame. Vos données restent strictement confidentielles.
-                    </p>
-                  </div>
-                </form>
-              )}
+        <div>
+          <label className="block mb-1.5 text-sm font-medium text-encre">Situation</label>
+          <input
+            type="text"
+            placeholder="célibataire, mariée..."
+            value={data.questionnaire?.situation || ''}
+            onChange={(e) =>
+              setData({
+                ...data,
+                questionnaire: { ...data.questionnaire, situation: e.target.value }
+              })
+            }
+            className="w-full px-4 py-3.5 rounded-xl border-2 border-sable focus:border-sauge-500 focus:ring-2 focus:ring-sauge-500/20 outline-none transition-all bg-ivoire"
+          />
+        </div>
+      </div>
+
+      {/* PROBLÈME */}
+      <div>
+        <label className="block mb-1.5 text-sm font-medium text-encre">
+          Quelle est votre problématique principale ?
+        </label>
+        <textarea
+          rows="3"
+          value={data.questionnaire?.probleme || ''}
+          onChange={(e) =>
+            setData({
+              ...data,
+              questionnaire: { ...data.questionnaire, probleme: e.target.value }
+            })
+          }
+          className="w-full px-4 py-3.5 rounded-xl border-2 border-sable focus:border-sauge-500 focus:ring-2 focus:ring-sauge-500/20 outline-none transition-all bg-ivoire resize-none"
+        />
+      </div>
+
+      {/* SITUATION ACTUELLE */}
+      <div>
+        <label className="block mb-2 text-sm font-medium text-encre">
+          Votre situation actuelle
+        </label>
+
+        <div className="grid sm:grid-cols-2 gap-2">
+          {[
+            "Baisse de désir",
+            "Manque de confiance",
+            "Difficultés dans le couple",
+            "Blocages liés à la sexualité"
+          ].map((item) => (
+            <label key={item} className="flex items-center gap-2 text-sm bg-ivoire px-3 py-2 rounded-lg border border-sable">
+              <input
+                type="checkbox"
+                checked={data.questionnaire?.situationActuelle?.includes(item)}
+                onChange={(e) => {
+                  const current = data.questionnaire?.situationActuelle || [];
+                  const updated = e.target.checked
+                    ? [...current, item]
+                    : current.filter((i) => i !== item);
+
+                  setData({
+                    ...data,
+                    questionnaire: {
+                      ...data.questionnaire,
+                      situationActuelle: updated
+                    }
+                  });
+                }}
+              />
+              {item}
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {/* OBJECTIF */}
+      <div>
+        <label className="block mb-1.5 text-sm font-medium text-encre">
+          Qu’aimeriez-vous améliorer ou changer ?
+        </label>
+        <textarea
+          rows="3"
+          value={data.questionnaire?.objectif || ''}
+          onChange={(e) =>
+            setData({
+              ...data,
+              questionnaire: { ...data.questionnaire, objectif: e.target.value }
+            })
+          }
+          className="w-full px-4 py-3.5 rounded-xl border-2 border-sable focus:border-sauge-500 focus:ring-2 focus:ring-sauge-500/20 outline-none transition-all bg-ivoire resize-none"
+        />
+      </div>
+
+      {/* MOTIVATION */}
+      <div>
+        <label className="block mb-1.5 text-sm font-medium text-encre">
+          Motivation (1 à 10)
+        </label>
+        <input
+          type="number"
+          min="1"
+          max="10"
+          value={data.questionnaire?.motivation || ''}
+          onChange={(e) =>
+            setData({
+              ...data,
+              questionnaire: { ...data.questionnaire, motivation: e.target.value }
+            })
+          }
+          className="w-full px-4 py-3.5 rounded-xl border-2 border-sable focus:border-sauge-500 focus:ring-2 focus:ring-sauge-500/20 outline-none transition-all bg-ivoire"
+        />
+      </div>
+
+      {/* ENGAGEMENT */}
+      <div>
+        <label className="block mb-1.5 text-sm font-medium text-encre">
+          Êtes-vous prête à investir dans un accompagnement ?
+        </label>
+        <select
+          value={data.questionnaire?.engagement || ''}
+          onChange={(e) =>
+            setData({
+              ...data,
+              questionnaire: { ...data.questionnaire, engagement: e.target.value }
+            })
+          }
+          className="w-full px-4 py-3.5 rounded-xl border-2 border-sable bg-ivoire"
+        >
+          <option value="">Choisir</option>
+          <option>Oui</option>
+          <option>Non</option>
+          <option>Je ne sais pas encore</option>
+        </select>
+      </div>
+
+      {/* SOURCE */}
+      <div>
+        <label className="block mb-1.5 text-sm font-medium text-encre">
+          Comment m’avez-vous connue ?
+        </label>
+        <select
+          value={data.questionnaire?.source || ''}
+          onChange={(e) =>
+            setData({
+              ...data,
+              questionnaire: { ...data.questionnaire, source: e.target.value }
+            })
+          }
+          className="w-full px-4 py-3.5 rounded-xl border-2 border-sable bg-ivoire"
+        >
+          <option value="">Choisir</option>
+          <option>TikTok</option>
+          <option>Instagram</option>
+          <option>Recommandation</option>
+          <option>Autre</option>
+        </select>
+      </div>
+
+      {/* SÉPARATION */}
+      <div className="pt-4 border-t border-sable" />
+
+      {/* COORDONNÉES (inchangé mais stylé) */}
+      <div>
+        <label className="block mb-1.5 text-sm font-medium text-encre">Prénom *</label>
+        <input
+          type="text"
+          value={data.nom}
+          onChange={(e) => setData({ ...data, nom: e.target.value })}
+          className="w-full px-4 py-3.5 rounded-xl border-2 border-sable bg-ivoire"
+          required
+        />
+      </div>
+
+      <div>
+        <label className="block mb-1.5 text-sm font-medium text-encre">Email *</label>
+        <input
+          type="email"
+          value={data.email}
+          onChange={(e) => setData({ ...data, email: e.target.value })}
+          className="w-full px-4 py-3.5 rounded-xl border-2 border-sable bg-ivoire"
+          required
+        />
+      </div>
+
+      <div>
+        <label className="block mb-1.5 text-sm font-medium text-encre">Téléphone *</label>
+        <input
+          type="tel"
+          value={data.tel}
+          onChange={(e) => setData({ ...data, tel: e.target.value })}
+          className="w-full px-4 py-3.5 rounded-xl border-2 border-sable bg-ivoire"
+          required
+        />
+      </div>
+
+    </div>
+  </form>
+)}
             </div>
 
             {/* Navigation footer */}
