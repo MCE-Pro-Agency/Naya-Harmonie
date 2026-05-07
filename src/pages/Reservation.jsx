@@ -108,7 +108,7 @@ export default function ReservationHeroCarrousel() {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhzZ2R4Z290dXlsaWZqc3JqZW1sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwOTY2NzgsImV4cCI6MjA5MzY3MjY3OH0.2XyUlME6gcJFKRaUq1yCPhSoBdY8vvTCelwgkYLOwl0'
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhzZ2d4Z290dXlsaWZqc3JqZW1sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwOTY2NzgsImV4cCI6MjA5MzY3MjY3OH0.2XyUlME6gcJFKRaUq1yCPhSoBdY8vvTCelwgkYLOwl0'
           },
           body: JSON.stringify({
             questionnaire: data.questionnaire,
