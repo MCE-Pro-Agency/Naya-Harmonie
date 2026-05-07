@@ -1,26 +1,142 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingBag, Sparkles, ArrowRight, Filter, Search, Plus, Minus, X, Heart } from 'lucide-react';
+import { ShoppingBag, Sparkles, ArrowRight, Filter, Search, Plus, Minus, X, Heart, Leaf, Bell } from 'lucide-react';
 
-const PRODUCTS = [
-  { id: 1, name: 'Moringa', cat: 'plantes', catLabel: 'Plante · Poudre', desc: 'Énergie, vitalité, riche en nutriments. Surnommé "arbre de vie", soutient l\'équilibre hormonal.', priceXof: '5 000', priceEur: '8', emoji: '🌿', badge: 'Bestseller', badgeColor: 'sauge' },
-  { id: 2, name: 'Karité Nep-Nep', cat: 'beurres', catLabel: 'Beurre · Naturel', desc: 'Beurre de karité non traité, pur. Soin de la peau, des cheveux et du corps.', priceXof: '8 500', priceEur: '13', emoji: '🥥', badge: 'Nouveau', badgeColor: 'rose' },
-  { id: 3, name: 'Bissap naturel', cat: 'poudres', catLabel: 'Fleur · Poudre', desc: 'Fleurs d\'hibiscus pures en poudre. Antioxydant puissant, boisson rafraîchissante.', priceXof: '3 500', priceEur: '5', emoji: '🌺', badge: null },
-  { id: 4, name: 'Baobab', cat: 'poudres', catLabel: 'Fruit · Poudre', desc: 'Pain de singe en poudre. Riche en vitamine C, soutient l\'immunité et la digestion.', priceXof: '4 500', priceEur: '7', emoji: '🌰', badge: null },
-  { id: 5, name: 'Plante 4 côtés', cat: 'plantes', catLabel: 'Plante · Bien-être', desc: 'Plante traditionnelle aux propriétés équilibrantes pour la santé féminine.', priceXof: '6 000', priceEur: '9', emoji: '🌱', badge: null },
-  { id: 6, name: 'Moringa en feuilles', cat: 'plantes', catLabel: 'Plante · Feuilles', desc: 'Feuilles séchées de moringa. À infuser ou ajouter aux préparations.', priceXof: '4 000', priceEur: '6', emoji: '🍃', badge: null },
-  { id: 7, name: 'Beurre de karité poudre', cat: 'beurres', catLabel: 'Beurre · Poudre', desc: 'Karité en poudre, idéal pour préparations cosmétiques maison.', priceXof: '6 500', priceEur: '10', emoji: '✨', badge: null },
-  { id: 8, name: 'Feuilles de corossol', cat: 'plantes', catLabel: 'Plante · Feuilles', desc: 'Feuilles de corossol séchées. Connues pour leurs propriétés apaisantes.', priceXof: '3 800', priceEur: '6', emoji: '🌾', badge: null },
-];
+// ============================================================
+// COMING SOON OVERLAY
+// ============================================================
+function ComingSoonOverlay() {
+  const [email, setEmail] = useState('');
+  const [submitted, setSubmitted] = useState(false);
 
-const CATEGORIES = [
-  { id: 'all', label: 'Tous les produits' },
-  { id: 'plantes', label: 'Plantes' },
-  { id: 'poudres', label: 'Poudres' },
-  { id: 'beurres', label: 'Beurres' },
-];
+  const handleNotify = (e) => {
+    e.preventDefault();
+    if (email) {
+      setSubmitted(true);
+      // Tu pourras ajouter un vrai appel API plus tard
+    }
+  };
+
+  return (
+    <section className="min-h-screen relative bg-sauge-900 overflow-hidden flex items-center justify-center">
+      {/* Background décoratif */}
+      <div className="absolute inset-0">
+        <div className="absolute top-0 left-0 w-full h-full opacity-[0.03]"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+          }}
+        />
+        <div className="absolute top-1/4 -left-20 w-96 h-96 rounded-full bg-rose-300/5 blur-3xl" />
+        <div className="absolute bottom-1/4 -right-20 w-80 h-80 rounded-full bg-sauge-500/10 blur-3xl" />
+      </div>
+
+      {/* Feuilles décoratives */}
+      <div className="absolute top-10 right-10 opacity-10 text-rose-300 animate-pulse">
+        <Leaf className="w-32 h-32 rotate-45" />
+      </div>
+      <div className="absolute bottom-20 left-10 opacity-10 text-sauge-300 animate-pulse" style={{ animationDelay: '1s' }}>
+        <Leaf className="w-24 h-24 -rotate-12" />
+      </div>
+
+      {/* Contenu */}
+      <div className="relative z-10 text-center px-6 max-w-2xl mx-auto">
+        {/* Logo / Emoji */}
+        <div className="mb-8 inline-flex items-center justify-center w-24 h-24 rounded-full bg-ivoire/10 backdrop-blur-sm border border-ivoire/10">
+          <span className="text-5xl">🌿</span>
+        </div>
+
+        {/* Badge */}
+        <div className="mb-6">
+          <span className="inline-block px-5 py-2 rounded-full bg-rose-300/15 text-rose-300 text-xs font-medium uppercase tracking-[0.25em] border border-rose-300/20">
+            Bientôt disponible
+          </span>
+        </div>
+
+        {/* Titre */}
+        <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl text-ivoire font-medium leading-[1.05] mb-6">
+          Notre boutique<br />
+          <span className="italic text-rose-300">arrive bientôt</span>
+        </h1>
+
+        {/* Description */}
+        <p className="text-ivoire/70 text-lg md:text-xl leading-relaxed mb-10 max-w-lg mx-auto">
+          Plantes, poudres et trésors naturels du Sénégal. Sourcés avec amour pour votre bien-être et votre beauté.
+        </p>
+
+        {/* Formulaire notification */}
+        {!submitted ? (
+          <form onSubmit={handleNotify} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto mb-10">
+            <div className="flex-1 relative">
+              <input
+                type="email"
+                placeholder="Votre email pour être notifié(e)"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full px-5 py-4 rounded-full bg-ivoire/10 border border-ivoire/20 text-ivoire placeholder:text-ivoire/40 focus:border-rose-300/50 focus:ring-2 focus:ring-rose-300/20 outline-none transition-all text-sm backdrop-blur-sm"
+              />
+            </div>
+            <button
+              type="submit"
+              className="px-6 py-4 rounded-full bg-rose-300 text-sauge-900 font-medium text-sm hover:bg-rose-200 transition-all flex items-center justify-center gap-2 whitespace-nowrap"
+            >
+              <Bell className="w-4 h-4" />
+              <span>Me notifier</span>
+            </button>
+          </form>
+        ) : (
+          <div className="mb-10 px-6 py-4 rounded-2xl bg-ivoire/10 border border-ivoire/15 backdrop-blur-sm max-w-md mx-auto">
+            <p className="text-ivoire flex items-center justify-center gap-2">
+              <span className="text-rose-300">✓</span>
+              Merci ! Vous serez notifié(e) du lancement.
+            </p>
+          </div>
+        )}
+
+        {/* Aperçu produits */}
+        <div className="flex justify-center gap-4 mb-10">
+          {['🌿', '🥥', '🌺', '🌰'].map((emoji, i) => (
+            <div
+              key={i}
+              className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-ivoire/8 border border-ivoire/10 flex items-center justify-center text-2xl md:text-3xl backdrop-blur-sm hover:bg-ivoire/12 transition-all hover:-translate-y-1"
+              style={{ animationDelay: `${i * 100}ms` }}
+            >
+              {emoji}
+            </div>
+          ))}
+        </div>
+
+        {/* Lien retour */}
+        <Link
+          to="/"
+          className="inline-flex items-center gap-2 text-ivoire/50 hover:text-ivoire/80 transition-colors text-sm"
+        >
+          <ArrowRight className="w-4 h-4 rotate-180" />
+          <span>Retour à l'accueil</span>
+        </Link>
+      </div>
+    </section>
+  );
+}
+
+// ============================================================
+// COMPOSANT PRINCIPAL
+// ============================================================
+
+// 🔴 CHANGER À false QUAND LA BOUTIQUE EST PRÊTE
+const COMING_SOON = true;
 
 export default function Boutique() {
+  // ============================================================
+  // SI COMING SOON → AFFICHER L'OVERLAY
+  // ============================================================
+  if (COMING_SOON) {
+    return <ComingSoonOverlay />;
+  }
+
+  // ============================================================
+  // SINON → BOUTIQUE NORMALE (code existant ci-dessous)
+  // ============================================================
   const [activeCat, setActiveCat] = useState('all');
   const [search, setSearch] = useState('');
   const [cart, setCart] = useState([]);
