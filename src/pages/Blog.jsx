@@ -1,6 +1,6 @@
+import { ArrowRight, Calendar, Clock, Search } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Clock, Search, Calendar } from 'lucide-react';
 
 const ARTICLES = [
   {
@@ -62,7 +62,7 @@ const ARTICLES = [
     date: '10 mars 2026',
     title: 'Bouffées de chaleur : comprendre et apaiser naturellement',
     desc: "Les mécanismes hormonaux derrière les bouffées et les solutions naturelles qui ont fait leurs preuves.",
-    img: './images/menopose.jpg',
+    img: './images/menopause2.jpg',
   },
 ];
 
