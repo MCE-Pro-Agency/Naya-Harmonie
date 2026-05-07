@@ -128,7 +128,7 @@ export default function Home() {
                   style={{ animationDelay: '0.5s' }}
                 >
                   <span className="text-xs font-medium text-bordeaux tracking-wider uppercase">
-                    ★ Sénégal · France
+                    ★ France · Sénégal 
                   </span>
                 </div>
               </div>
