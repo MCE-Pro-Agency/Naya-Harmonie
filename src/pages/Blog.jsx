@@ -62,7 +62,7 @@ const ARTICLES = [
     date: '10 mars 2026',
     title: 'Bouffées de chaleur : comprendre et apaiser naturellement',
     desc: "Les mécanismes hormonaux derrière les bouffées et les solutions naturelles qui ont fait leurs preuves.",
-    img: './images/menopause2.jpg',
+    img: './images/menopause3.jpg',
   },
 ];
 
