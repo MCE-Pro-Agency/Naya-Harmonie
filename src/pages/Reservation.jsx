@@ -103,7 +103,7 @@ export default function ReservationHeroCarrousel() {
 
       // APPELER LA SUPABASE EDGE FUNCTION
       const response = await fetch(
-        'https://xsgpxgotuylifjsrjeml.supabase.co/functions/v1/submit-questionnaire',
+        'https://xsggxgotuylifjsrjeml.supabase.co/functions/v1/submit-questionnaire',
         {
           method: 'POST',
           headers: {
