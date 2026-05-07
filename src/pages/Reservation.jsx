@@ -1,7 +1,7 @@
 import { ArrowLeft, ArrowRight, Award, Check, Clock, Heart, Leaf, MessageCircle, Shield, Sparkles } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { SERVICES_DATA } from './Services_Data';
 import { QUESTIONNAIRES_DATA } from './Questionnaires_Data';
+import { SERVICES_DATA } from './Services_Data';
 
 const PAYS = [
   { id: 'senegal', label: 'Sénégal', code: 'SN', currency: 'FCFA' },
@@ -26,8 +26,6 @@ export default function ReservationHeroCarrousel() {
   const [activeService, setActiveService] = useState(0);
   const [data, setData] = useState({
     pays: '', type: '', profil: '',
-    nom: '', prenom: '', email: '', tel: '', age: '', message: '',
-    // Réponses du questionnaire
     questionnaire: {}
   });
 
@@ -91,6 +89,9 @@ export default function ReservationHeroCarrousel() {
     }
   };
 
+  // ============================================================
+  // HANDLERESERVER - APPELLE SUPABASE EDGE FUNCTION
+  // ============================================================
   const handleReserver = async (e) => {
     e.preventDefault();
     if (!areRequiredFieldsComplete()) return;
@@ -98,86 +99,46 @@ export default function ReservationHeroCarrousel() {
     setLoading(true);
 
     try {
-      // Préparer les données du questionnaire pour l'email
-      const questionnairesFormatted = currentQuestionnaire.questions
-        .map(q => {
-          const value = data.questionnaire[q.id];
-          if (q.type === 'select' || q.type === 'checkbox') {
-            if (q.type === 'checkbox' && Array.isArray(value)) {
-              return `${q.label}: ${value.map(v => 
-                q.options.find(opt => opt.value === v)?.label || v
-              ).join(', ')}`;
-            }
-            const selectedOption = q.options.find(opt => opt.value === value);
-            return `${q.label}: ${selectedOption?.label || value}`;
-          }
-          return `${q.label}: ${value}`;
-        })
-        .join('\n');
+      console.log('📋 Envoi du questionnaire à Supabase...');
 
-      const response = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${import.meta.env.VITE_RESEND_API_KEY}`,
-        },
-        body: JSON.stringify({
-          from: 'Naya Harmonie <noreply@nayaharmonie.com>',
-          to: 'mariame.coulibaly@yahoo.fr',
-          subject: `📋 Nouveau questionnaire - ${TYPES.find(t => t.id === data.type)?.label}`,
-          html: `
-            <div style="font-family: 'Anthropic Sans', sans-serif; max-width: 600px; margin: 0 auto; color: #3d3d3a;">
-              <div style="background: linear-gradient(135deg, #2d5446 0%, #8b5a6b 100%); padding: 40px 20px; text-align: center; border-radius: 12px 12px 0 0;">
-                <h1 style="color: #fff; margin: 0; font-size: 28px;">📋 Nouveau Questionnaire Reçu</h1>
-              </div>
-              
-              <div style="padding: 40px 20px; background: #f5f5f5;">
-                <div style="background: white; padding: 30px; border-radius: 8px;">
-                  <h2 style="color: #2d5446; margin-top: 0;">Informations Personnelles</h2>
-                  
-                  <div style="margin: 20px 0; padding: 15px; background: #f0f0f0; border-left: 4px solid #d4537e; border-radius: 4px;">
-                    <p style="margin: 5px 0;"><strong>👤 Nom :</strong> ${data.questionnaire['nom']}</p>
-                    <p style="margin: 5px 0;"><strong>👤 Prénom :</strong> ${data.questionnaire['prenom']}</p>
-                    <p style="margin: 5px 0;"><strong>📧 Email :</strong> ${data.questionnaire['mail']}</p>
-                    <p style="margin: 5px 0;"><strong>📱 Téléphone :</strong> ${data.questionnaire['telephone']}</p>
-                    <p style="margin: 5px 0;"><strong>🎂 Âge :</strong> ${data.questionnaire['age']} ans</p>
-                  </div>
+      // APPELER LA SUPABASE EDGE FUNCTION
+      const response = await fetch(
+        'https://xsgpxgotuylifjsrjeml.supabase.co/functions/v1/submit-questionnaire',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhzZ2R4Z290dXlsaWZqc3JqZW1sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwOTY2NzgsImV4cCI6MjA5MzY3MjY3OH0.2XyUlME6gcJFKRaUq1yCPhSoBdY8vvTCelwgkYLOwl0'
+          },
+          body: JSON.stringify({
+            questionnaire: data.questionnaire,
+            pays: data.pays,
+            type: data.type,
+            profil: data.profil
+          })
+        }
+      );
 
-                  <h2 style="color: #2d5446; margin-top: 30px;">Détails du Service & Accompagnement</h2>
-                  
-                  <div style="margin: 20px 0; padding: 15px; background: #f0f0f0; border-left: 4px solid #5a8b6f; border-radius: 4px;">
-                    <p style="margin: 5px 0;"><strong>🌍 Localisation :</strong> ${PAYS.find(p => p.id === data.pays)?.label}</p>
-                    <p style="margin: 5px 0;"><strong>💚 Service :</strong> ${TYPES.find(t => t.id === data.type)?.label}</p>
-                    <p style="margin: 5px 0;"><strong>👥 Profil :</strong> ${PROFILS.find(p => p.id === data.profil)?.label}</p>
-                  </div>
+      const result = await response.json();
 
-                  <h2 style="color: #2d5446; margin-top: 30px;">Réponses au Questionnaire</h2>
-                  
-                  <div style="margin: 20px 0; padding: 15px; background: #faf9f7; border-left: 4px solid #f2a623; border-radius: 4px;">
-                    <p style="white-space: pre-wrap; color: #555; line-height: 1.8;">${questionnairesFormatted}</p>
-                  </div>
+      if (!response.ok) {
+        throw new Error(result.error || 'Erreur lors de la réservation');
+      }
 
-                  <div style="margin-top: 30px; padding: 20px; background: #f0fdf4; border: 1px solid #86efac; border-radius: 8px;">
-                    <p style="margin: 0; color: #166534; font-weight: 500;">✅ La cliente sera redirigée vers Calendly pour confirmer son créneau.</p>
-                  </div>
-                </div>
-              </div>
+      console.log('✅ Questionnaire soumis avec succès');
+      console.log('📋 Booking ID:', result.bookingId);
+      console.log('📅 Redirection vers Calendly...');
 
-              <div style="text-align: center; padding: 20px; color: #999; font-size: 12px;">
-                <p>Email automatique depuis Naya Harmonie</p>
-              </div>
-            </div>
-          `,
-        }),
-      });
+      // REDIRIGER VERS CALENDLY
+      if (result.calendlyUrl) {
+        window.location.href = result.calendlyUrl;
+      } else {
+        throw new Error('URL Calendly non reçue du serveur');
+      }
 
-      if (!response.ok) throw new Error('Erreur lors de l\'envoi de l\'email');
-
-      const calendlyUrl = `https://calendly.com/?email=${encodeURIComponent(data.questionnaire['mail'])}&name=${encodeURIComponent(data.questionnaire['prenom'])}&service=${data.type}&country=${data.pays}`;
-      window.location.href = calendlyUrl;
     } catch (error) {
-      console.error('Erreur:', error);
-      alert('Erreur lors de la réservation. Veuillez réessayer.');
+      console.error('❌ Erreur:', error);
+      alert(`Erreur: ${error.message}`);
       setLoading(false);
     }
   };
@@ -453,6 +414,7 @@ export default function ReservationHeroCarrousel() {
                                   className="w-full px-4 py-3.5 rounded-xl border-2 border-sable focus:border-sauge-500 focus:ring-2 focus:ring-sauge-500/20 outline-none transition-all bg-ivoire text-encre"
                                   required={q.required}
                                 >
+                                  <option value="">-- Sélectionner une option --</option>
                                   {q.options.map(opt => (
                                     <option key={opt.value} value={opt.value}>{opt.label}</option>
                                   ))}
@@ -544,8 +506,8 @@ export default function ReservationHeroCarrousel() {
               <div className="w-12 h-12 rounded-full bg-rose-300/30 flex items-center justify-center mx-auto mb-3">
                 <Clock className="w-5 h-5 text-rose-700" />
               </div>
-              <p className="font-serif text-lg text-encre mb-1">Reunion</p>
-              <p className="text-xs text-encre-muted">A distance</p>
+              <p className="font-serif text-lg text-encre mb-1">Réunion</p>
+              <p className="text-xs text-encre-muted">À distance</p>
             </div>
             <div className="text-center p-5">
               <div className="w-12 h-12 rounded-full bg-sauge-100 flex items-center justify-center mx-auto mb-3">
