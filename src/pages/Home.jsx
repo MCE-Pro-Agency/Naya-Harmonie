@@ -309,7 +309,7 @@ export default function Home() {
                       Certificat IPHM
                     </a>
                     <a
-                      href="/images/TON-DEUXIEME-CERTIFICAT.pdf"
+                      href="/images/certificat_menopause.pdf"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-3 px-5 py-4 hover:bg-rose-300/20 transition-colors text-sm text-encre border-t border-sable"
