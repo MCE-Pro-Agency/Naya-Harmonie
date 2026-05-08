@@ -306,7 +306,7 @@ export default function Home() {
                       className="flex items-center gap-3 px-5 py-4 hover:bg-sauge-100 transition-colors text-sm text-encre"
                     >
                       <Award className="w-4 h-4 text-sauge-700" />
-                      Certificat IPHM
+                      Sexualite
                     </a>
                     <a
                       href="/images/certificat_menopause.pdf"
@@ -315,7 +315,7 @@ export default function Home() {
                       className="flex items-center gap-3 px-5 py-4 hover:bg-rose-300/20 transition-colors text-sm text-encre border-t border-sable"
                     >
                       <Award className="w-4 h-4 text-rose-700" />
-                      Deuxième certificat
+                      Menopaause
                     </a>
                   </div>
                 </div>
