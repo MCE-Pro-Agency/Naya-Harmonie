@@ -309,14 +309,34 @@ export default function Home() {
                 </Link>
 
                 {/* Bouton certificat */}
-                <a
+                {/* Bouton certificats avec dropdown */}
+            <div className="relative group">
+              <button className="px-8 py-4 rounded-full text-sm font-medium border border-sauge-700 text-sauge-700 hover:bg-sauge-700 hover:text-white transition-all inline-flex items-center gap-2">
+                <Award className="w-4 h-4" />
+                Mes certifications
+              </button>
+              <div className="absolute bottom-full left-0 mb-2 w-64 bg-white rounded-2xl shadow-xl border border-sable opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 overflow-hidden z-20">
+                
                   href="/images/certificat-reussite.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-8 py-4 rounded-full text-sm font-medium border border-sauge-700 text-sauge-700 hover:bg-sauge-700 hover:text-white transition-all inline-flex items-center gap-2"
+                  className="flex items-center gap-3 px-5 py-4 hover:bg-sauge-100 transition-colors text-sm text-encre"
                 >
-                  Voir ma certification
+                  <Award className="w-4 h-4 text-sauge-700" />
+                  Certificat IPHM
                 </a>
+                
+                  href="/images/TON-DEUXIEME-CERTIFICAT.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 px-5 py-4 hover:bg-rose-300/20 transition-colors text-sm text-encre border-t border-sable"
+                >
+                  <Award className="w-4 h-4 text-rose-700" />
+                  Deuxième certificat
+                </a>
+              </div>
+            </div>
+                            </a>
               </div>
             </div>
           </div>
