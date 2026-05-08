@@ -130,8 +130,13 @@ export default function ReservationHeroCarrousel() {
       console.log('📅 Redirection vers Calendly...');
 
       // REDIRIGER VERS CALENDLY
+      // OUVRIR CALENDLY DANS UN NOUVEL ONGLET
       if (result.calendlyUrl) {
-        window.location.href = result.calendlyUrl;
+        window.open(result.calendlyUrl, '_blank');
+        setLoading(false);
+        setStep(1);
+        setData({ pays: '', type: '', profil: '', questionnaire: {} });
+        alert('✅ Questionnaire envoyé avec succès !\n\nCalendly s\'ouvre dans un nouvel onglet pour choisir votre créneau.');
       } else {
         throw new Error('URL Calendly non reçue du serveur');
       }
