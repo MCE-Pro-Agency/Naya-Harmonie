@@ -19,7 +19,6 @@ export default function Home() {
         id="top"
         className="relative min-h-screen overflow-hidden bg-sauge-900 text-ivoire pt-24 lg:pt-0 grain"
       >
-        {/* Décor botanique animé */}
         <svg
           className="absolute top-20 right-10 w-32 h-32 lg:w-56 lg:h-56 opacity-20 z-10"
           viewBox="0 0 200 200"
@@ -38,10 +37,8 @@ export default function Home() {
         <div className="relative z-20 w-full px-6 lg:px-10 min-h-screen flex items-center py-20">
           <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center w-full">
 
-            {/* Texte gauche - Complètement à l'extrémité */}
             <div className="lg:col-span-6 order-2 lg:order-1">
               <div className="flex items-center gap-3 mb-8 animate-fade-in opacity-0">
-                
               </div>
 
               <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-medium leading-[0.95] tracking-tight mb-6 animate-fade-up opacity-0" style={{ animationDelay: '0.1s' }}>
@@ -71,7 +68,6 @@ export default function Home() {
                 </a>
               </div>
 
-              {/* Trust indicators */}
               <div className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-6 border-t border-ivoire/15 animate-fade-up opacity-0" style={{ animationDelay: '0.5s' }}>
                 <div className="flex items-center gap-2">
                   <Award className="w-5 h-5 text-rose-300" />
@@ -88,17 +84,13 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Image hero (droite) - Décalée à gauche + hauteur augmentée */}
-             {/* Image hero (droite) - CENTRÉE SUR MOBILE, DÉCALÉE SUR DESKTOP */}
             <div
               className="lg:col-span-6 order-1 lg:order-2 relative animate-slide-right opacity-0 flex justify-center lg:justify-start"
               style={{ animationDelay: '0.2s' }}
             >
               <div
                 className="relative w-full max-w-sm lg:max-w-md lg:translate-x-36"
-                style={{
-                  aspectRatio: '4 / 5.4',
-                }}
+                style={{ aspectRatio: '4 / 5.4' }}
               >
                 <div className="absolute inset-0 rounded-[160px_160px_20px_20px] overflow-hidden border-[3px] border-rose-300/40 shadow-2xl">
                   <img
@@ -109,7 +101,6 @@ export default function Home() {
                   <div className="absolute inset-0 bg-gradient-to-t from-sauge-900/30 via-transparent to-transparent pointer-events-none" />
                 </div>
 
-                {/* Badge floating "Cultivez l'amour" */}
                 <div className="absolute -bottom-6 -left-6 lg:-left-12 bg-ivoire px-6 py-4 rounded-2xl shadow-2xl max-w-[220px] z-10 animate-float">
                   <Quote className="w-4 h-4 text-rose-300 mb-1" />
                   <p className="font-serif italic text-sauge-900 text-sm leading-snug">
@@ -122,13 +113,12 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Badge floating note */}
                 <div
                   className="absolute -top-4 -right-4 lg:-right-8 bg-rose-300/95 backdrop-blur px-4 py-3 rounded-full shadow-xl z-10 rotate-6 animate-float"
                   style={{ animationDelay: '0.5s' }}
                 >
                   <span className="text-xs font-medium text-bordeaux tracking-wider uppercase">
-                    ★ France · Sénégal 
+                    ★ France · Sénégal
                   </span>
                 </div>
               </div>
@@ -136,7 +126,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Scroll indicator */}
         <a
           href="#piliers"
           className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 hidden lg:flex flex-col items-center gap-2 animate-fade-in opacity-0 group"
@@ -181,7 +170,6 @@ export default function Home() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
-            {/* Pilier 1 */}
             <article className="reveal group">
               <div className="card-img aspect-[4/5] rounded-3xl overflow-hidden mb-6 relative">
                 <img src="./images/couple.jpg" alt="Couple complice" className="w-full h-full object-cover" />
@@ -200,7 +188,6 @@ export default function Home() {
               </Link>
             </article>
 
-            {/* Pilier 2 — décalé */}
             <article className="reveal md:mt-16 group">
               <div className="card-img aspect-[4/5] rounded-3xl overflow-hidden mb-6 relative">
                 <img src="./images/energie.jpg" alt="Séance de coaching" className="w-full h-full object-cover" />
@@ -219,7 +206,6 @@ export default function Home() {
               </Link>
             </article>
 
-            {/* Pilier 3 */}
             <article className="reveal group">
               <div className="card-img aspect-[4/5] rounded-3xl overflow-hidden mb-6 relative">
                 <img src="./images/profil1.jpg" alt="Bienveillance" className="w-full h-full object-cover" />
@@ -254,7 +240,6 @@ export default function Home() {
                 <div className="aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl">
                   <img src="./images/profil.jpeg" alt="Mariame en séance" className="w-full h-full object-cover" />
                 </div>
-                
               </div>
             </div>
 
@@ -273,7 +258,6 @@ export default function Home() {
               <p className="text-encre-soft leading-[1.85] mb-10 text-base lg:text-lg">
                 Certifiée par l'IPHM, je propose un accompagnement à distance, confidentiel et personnalisé, pensé pour les femmes mariées et les couples qui souhaitent cultiver une relation épanouie et durable.
               </p>
-              
 
               <div className="grid sm:grid-cols-2 gap-5 mb-10">
                 {[
@@ -308,35 +292,33 @@ export default function Home() {
                   <ArrowRight className="w-4 h-4" />
                 </Link>
 
-                {/* Bouton certificat */}
                 {/* Bouton certificats avec dropdown */}
-            <div className="relative group">
-              <button className="px-8 py-4 rounded-full text-sm font-medium border border-sauge-700 text-sauge-700 hover:bg-sauge-700 hover:text-white transition-all inline-flex items-center gap-2">
-                <Award className="w-4 h-4" />
-                Mes certifications
-              </button>
-              <div className="absolute bottom-full left-0 mb-2 w-64 bg-white rounded-2xl shadow-xl border border-sable opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 overflow-hidden z-20">
-                
-                  href="/images/certificat-reussite.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 px-5 py-4 hover:bg-sauge-100 transition-colors text-sm text-encre"
-                >
-                  <Award className="w-4 h-4 text-sauge-700" />
-                  Certificat IPHM
-                </a>
-                
-                  href="/images/TON-DEUXIEME-CERTIFICAT.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 px-5 py-4 hover:bg-rose-300/20 transition-colors text-sm text-encre border-t border-sable"
-                >
-                  <Award className="w-4 h-4 text-rose-700" />
-                  Deuxième certificat
-                </a>
-              </div>
-            </div>
-                            </a>
+                <div className="relative group">
+                  <button className="px-8 py-4 rounded-full text-sm font-medium border border-sauge-700 text-sauge-700 hover:bg-sauge-700 hover:text-white transition-all inline-flex items-center gap-2">
+                    <Award className="w-4 h-4" />
+                    Mes certifications
+                  </button>
+                  <div className="absolute bottom-full left-0 mb-2 w-64 bg-white rounded-2xl shadow-xl border border-sable opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 overflow-hidden z-20">
+                    <a
+                      href="/images/certificat-reussite.pdf"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 px-5 py-4 hover:bg-sauge-100 transition-colors text-sm text-encre"
+                    >
+                      <Award className="w-4 h-4 text-sauge-700" />
+                      Certificat IPHM
+                    </a>
+                    <a
+                      href="/images/TON-DEUXIEME-CERTIFICAT.pdf"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 px-5 py-4 hover:bg-rose-300/20 transition-colors text-sm text-encre border-t border-sable"
+                    >
+                      <Award className="w-4 h-4 text-rose-700" />
+                      Deuxième certificat
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -363,7 +345,6 @@ export default function Home() {
           </div>
 
           <div className="grid lg:grid-cols-2 gap-6">
-            {/* Service 1 - large */}
             <article className="reveal lg:col-span-2 bg-sauge-900 text-ivoire rounded-3xl overflow-hidden group">
               <div className="grid md:grid-cols-2">
                 <div className="card-img aspect-[4/3] md:aspect-auto">
@@ -392,7 +373,6 @@ export default function Home() {
               </div>
             </article>
 
-            {/* Service 2 */}
             <article className="reveal bg-rose-300/15 rounded-3xl overflow-hidden p-8 lg:p-10 group hover:bg-rose-300/25 transition-colors">
               <div className="flex items-start justify-between mb-6">
                 <span className="text-rose-700 font-serif italic text-sm">N°02</span>
@@ -412,7 +392,6 @@ export default function Home() {
               </div>
             </article>
 
-            {/* Service 3 */}
             <article className="reveal bg-sauge-100 rounded-3xl overflow-hidden p-8 lg:p-10 group hover:bg-sauge-300/30 transition-colors">
               <div className="flex items-start justify-between mb-6">
                 <span className="text-sauge-700 font-serif italic text-sm">N°03</span>
@@ -432,7 +411,6 @@ export default function Home() {
               </div>
             </article>
 
-            {/* Service 4 - large */}
             <article className="reveal lg:col-span-2 border border-sable rounded-3xl overflow-hidden p-8 lg:p-12 grid md:grid-cols-3 gap-8 items-center" style={{ background: '#EEF1E6' }}>
               <div className="md:col-span-2">
                 <div className="flex items-center gap-3 mb-4">
