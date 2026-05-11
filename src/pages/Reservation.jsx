@@ -3,13 +3,9 @@ import { useEffect, useState } from 'react';
 import { QUESTIONNAIRES_DATA } from './Questionnaires_Data';
 import { SERVICES_DATA } from './Services_Data';
 
-const PAYS = [
-  { id: 'senegal', label: 'Sénégal', code: 'SN', currency: 'FCFA' },
-  { id: 'france', label: 'France', code: 'FR', currency: '€' },
-];
-
 const PROFILS = [
   { id: 'femme', label: 'Femme seule', icon: '♀', desc: 'Je viens seule pour mon accompagnement' },
+  { id: 'homme', label: 'Homme seul', icon: '♂', desc: 'Je viens seul pour mon accompagnement' },
   { id: 'couple', label: 'En couple', icon: '♀ + ♂', desc: 'Nous venons en couple' },
 ];
 
@@ -336,8 +332,7 @@ export default function ReservationHeroCarrousel() {
                   <h2 className="font-serif text-3xl md:text-4xl text-encre mb-2">
                     Vous êtes <span className="italic text-sauge-700">?</span>
                   </h2>
-                  <p className="text-sm text-encre-muted mb-2">Mon accompagnement s'adresse aux femmes et aux couples uniquement.</p>
-                  <p className="text-xs text-rose-700 italic mb-8">⚠ Les hommes seuls ne sont pas pris en charge.</p>
+                  <p className="text-sm text-encre-muted mb-8">Choisissez le profil qui vous correspond.</p>
                   <div className="grid sm:grid-cols-2 gap-3">
                     {PROFILS.map((p) => (
                       <button
