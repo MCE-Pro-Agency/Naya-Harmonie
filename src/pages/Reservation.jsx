@@ -2,25 +2,25 @@ import { ArrowLeft, ArrowRight, Award, Check, Clock, Heart, Leaf, MessageCircle,
 import { useEffect, useState } from 'react';
 import { QUESTIONNAIRES_DATA } from './Questionnaires_Data';
 import { SERVICES_DATA } from './Services_Data';
-
+ 
 const PAYS = [
   { id: 'senegal', label: 'Sénégal', code: 'SN', currency: 'FCFA' },
   { id: 'france', label: 'France', code: 'FR', currency: '€' },
 ];
-
+ 
 const PROFILS = [
   { id: 'femme', label: 'Femme seule', icon: '♀', desc: 'Je viens seule pour mon accompagnement' },
   { id: 'homme', label: 'Homme seul', icon: '♂', desc: 'Je viens seul pour mon accompagnement' },
   { id: 'couple', label: 'En couple', icon: '♀ + ♂', desc: 'Nous venons en couple' },
 ];
-
+ 
 const SERVICES_LIST = [
   { id: 'sexo', label: 'Sexothérapie', desc: "Réveiller le désir, explorer l'intimité en confiance", icon: Heart, color: 'rose', img: './images/sexualite.jpg' },
   { id: 'couple', label: 'Harmonie de couple', desc: 'Complicité, communication, raviver la flamme', icon: Sparkles, color: 'rose', img: './images/couple.jpg' },
   { id: 'meno', label: 'Pré/Ménopause', desc: 'Équilibre hormonal, énergie, sérénité', icon: Leaf, color: 'sauge', img: './images/menopose.jpg' },
   { id: 'bien', label: 'Bien-être féminin', desc: 'Reconnexion à son corps et sa féminité', icon: Heart, color: 'sauge', img: './images/bien-etre.jpg' },
 ];
-
+ 
 export default function ReservationHeroCarrousel() {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -29,7 +29,7 @@ export default function ReservationHeroCarrousel() {
     pays: '', type: '', profil: '',
     questionnaire: {}
   });
-
+ 
   // Auto-rotation du carrousel
   useEffect(() => {
     const interval = setInterval(() => {
@@ -37,40 +37,40 @@ export default function ReservationHeroCarrousel() {
     }, 5000);
     return () => clearInterval(interval);
   }, []);
-
+ 
   const next = () => setStep((s) => s + 1);
   const prev = () => setStep((s) => s - 1);
-
+ 
   const nextService = () => setActiveService((prev) => (prev + 1) % SERVICES_LIST.length);
   const prevService = () => setActiveService((prev) => (prev - 1 + SERVICES_LIST.length) % SERVICES_LIST.length);
-
+ 
   const TYPES = [
     { id: 'sexo', label: 'Sexothérapie', desc: "Réveiller le désir, explorer l'intimité en confiance", icon: Heart, color: 'rose' },
     { id: 'couple', label: 'Harmonie de couple', desc: 'Complicité, communication, raviver la flamme', icon: Sparkles, color: 'rose' },
     { id: 'meno', label: 'Pré/Ménopause', desc: 'Équilibre hormonal, énergie, sérénité', icon: Leaf, color: 'sauge' },
     { id: 'bien', label: 'Bien-être féminin', desc: 'Reconnexion à son corps et sa féminité', icon: Heart, color: 'sauge' },
   ];
-
+ 
   // Récupérer le questionnaire du service choisi
   const currentQuestionnaire = data.type ? QUESTIONNAIRES_DATA[data.type] : null;
-
+ 
   // Vérifier les champs requis du questionnaire
   const areRequiredFieldsComplete = () => {
     if (!currentQuestionnaire) return false;
-
+ 
     return currentQuestionnaire.questions.every(q => {
       if (!q.required) return true;
-
+ 
       if (q.type === 'checkbox') {
         const selectedValues = data.questionnaire[q.id] || [];
         return Array.isArray(selectedValues) && selectedValues.length > 0;
       }
-
+ 
       const value = data.questionnaire[q.id];
       return value && value.toString().trim() !== '';
     });
   };
-
+ 
   // Gérer les changements de réponse
   const handleQuestionChange = (questionId, value, type) => {
     if (type === 'checkbox') {
@@ -89,19 +89,19 @@ export default function ReservationHeroCarrousel() {
       });
     }
   };
-
+ 
   // ============================================================
   // HANDLERESERVER - APPELLE SUPABASE EDGE FUNCTION
   // ============================================================
   const handleReserver = async (e) => {
     e.preventDefault();
     if (!areRequiredFieldsComplete()) return;
-
+ 
     setLoading(true);
-
+ 
     try {
       console.log('📋 Envoi du questionnaire à Supabase...');
-
+ 
       // APPELER LA SUPABASE EDGE FUNCTION
       const response = await fetch(
         'https://xsggxgotuylifjsrjeml.supabase.co/functions/v1/submit-questionnaire',
@@ -119,18 +119,17 @@ export default function ReservationHeroCarrousel() {
           })
         }
       );
-
+ 
       const result = await response.json();
-
+ 
       if (!response.ok) {
         throw new Error(result.error || 'Erreur lors de la réservation');
       }
-
+ 
       console.log('✅ Questionnaire soumis avec succès');
       console.log('📋 Booking ID:', result.bookingId);
       console.log('📅 Redirection vers Calendly...');
-
-      // REDIRIGER VERS CALENDLY
+ 
       // OUVRIR CALENDLY DANS UN NOUVEL ONGLET
       if (result.calendlyUrl) {
         window.open(result.calendlyUrl, '_blank');
@@ -141,23 +140,23 @@ export default function ReservationHeroCarrousel() {
       } else {
         throw new Error('URL Calendly non reçue du serveur');
       }
-
+ 
     } catch (error) {
       console.error('❌ Erreur:', error);
       alert(`Erreur: ${error.message}`);
       setLoading(false);
     }
   };
-
+ 
   const canContinue =
     (step === 1 && data.pays) ||
     (step === 2 && data.type) ||
     (step === 3 && data.profil) ||
     (step === 4 && areRequiredFieldsComplete());
-
+ 
   const currentService = SERVICES_LIST[activeService];
   const currentServiceData = SERVICES_DATA[currentService.id];
-
+ 
   return (
     <>
       {/* HERO CARROUSEL - FULL WIDTH */}
@@ -173,22 +172,22 @@ export default function ReservationHeroCarrousel() {
             />
             <div className="absolute inset-0 bg-gradient-to-r from-sauge-900/80 via-sauge-900/60 to-transparent" />
           </div>
-
+ 
           {/* Contenu */}
           <div className="relative z-10 w-full px-6 lg:px-10 max-w-7xl mx-auto">
             <div className="max-w-2xl">
               <span className="inline-block px-4 py-2 rounded-full bg-rose-300/30 text-rose-300 text-xs font-medium uppercase tracking-wider mb-6 reveal">
                 Service {activeService + 1} / {SERVICES_LIST.length}
               </span>
-
+ 
               <h1 className="font-serif text-6xl md:text-7xl lg:text-8xl text-ivoire font-medium leading-[0.95] tracking-tight mb-6 reveal">
                 {currentService.label}
               </h1>
-
+ 
               <p className="text-lg lg:text-xl text-ivoire/90 leading-relaxed mb-10 max-w-xl reveal">
                 {currentServiceData.description}
               </p>
-
+ 
               {/* Carrousel Controls */}
               <div className="flex items-center gap-6 reveal">
                 <button
@@ -197,7 +196,7 @@ export default function ReservationHeroCarrousel() {
                 >
                   <ArrowLeft className="w-6 h-6 text-ivoire" />
                 </button>
-
+ 
                 <div className="flex gap-2">
                   {SERVICES_LIST.map((_, i) => (
                     <button
@@ -209,7 +208,7 @@ export default function ReservationHeroCarrousel() {
                     />
                   ))}
                 </div>
-
+ 
                 <button
                   onClick={nextService}
                   className="p-3 rounded-full bg-ivoire/20 hover:bg-ivoire/30 transition-colors"
@@ -217,7 +216,7 @@ export default function ReservationHeroCarrousel() {
                   <ArrowRight className="w-6 h-6 text-ivoire" />
                 </button>
               </div>
-
+ 
               {/* Info Badge */}
               <div className="mt-12 pt-12 border-t border-ivoire/20 flex flex-wrap gap-x-8 gap-y-3">
                 <div className="flex items-center gap-2">
@@ -237,7 +236,7 @@ export default function ReservationHeroCarrousel() {
           </div>
         </div>
       </section>
-
+ 
       {/* FORMULAIRE RÉSERVATION */}
       <section className="py-16 lg:py-24 bg-ivoire">
         <div className="max-w-3xl mx-auto px-6 lg:px-10">
@@ -264,7 +263,7 @@ export default function ReservationHeroCarrousel() {
                 </p>
               </div>
             </div>
-
+ 
             <div className="p-8 lg:p-10">
               {/* ÉTAPE 1 - PAYS */}
               {step === 1 && (
@@ -292,7 +291,7 @@ export default function ReservationHeroCarrousel() {
                   </div>
                 </div>
               )}
-
+ 
               {/* ÉTAPE 2 - SERVICE */}
               {step === 2 && (
                 <div className="animate-fade-in">
@@ -330,7 +329,7 @@ export default function ReservationHeroCarrousel() {
                   </div>
                 </div>
               )}
-
+ 
               {/* ÉTAPE 3 - PROFIL */}
               {step === 3 && (
                 <div className="animate-fade-in">
@@ -338,27 +337,26 @@ export default function ReservationHeroCarrousel() {
                     Vous êtes <span className="italic text-sauge-700">?</span>
                   </h2>
                   <p className="text-sm text-encre-muted mb-8">Choisissez le profil qui vous correspond.</p>
-                  <div className="grid sm:grid-cols-2 gap-3 justify-items-center">
-                  {PROFILS.map((p) => (
-                    <button
-                      key={p.id}
-                      onClick={() => setData({ ...data, profil: p.id })}
-                      className={`w-full p-8 rounded-2xl border-2 transition-all text-center hover:-translate-y-0.5 ${
-                        p.id === PROFILS[PROFILS.length - 1].id ? 'sm:col-span-2 sm:max-w-[50%]' : ''
-                      } ${
-                        data.profil === p.id
-                          ? 'border-sauge-500 bg-sauge-100 shadow-lg'
-                          : 'border-sable bg-ivoire hover:border-sauge-300'
-                      }`}
-                    >
-                      <p className="font-serif text-4xl text-rose-700 mb-3">{p.icon}</p>
-                      <p className="font-medium text-encre text-lg mb-1">{p.label}</p>
-                      <p className="text-xs text-encre-muted">{p.desc}</p>
-                    </button>
-                  ))}
+                  <div className="grid sm:grid-cols-3 gap-3">
+                    {PROFILS.map((p) => (
+                      <button
+                        key={p.id}
+                        onClick={() => setData({ ...data, profil: p.id })}
+                        className={`p-8 rounded-2xl border-2 transition-all text-center hover:-translate-y-0.5 ${
+                          data.profil === p.id
+                            ? 'border-sauge-500 bg-sauge-100 shadow-lg'
+                            : 'border-sable bg-ivoire hover:border-sauge-300'
+                        }`}
+                      >
+                        <p className="font-serif text-4xl text-rose-700 mb-3">{p.icon}</p>
+                        <p className="font-medium text-encre text-lg mb-1">{p.label}</p>
+                        <p className="text-xs text-encre-muted">{p.desc}</p>
+                      </button>
+                    ))}
+                  </div>
                 </div>
               )}
-
+ 
               {/* ÉTAPE 4 - QUESTIONNAIRE DYNAMIQUE */}
               {step === 4 && currentQuestionnaire && (
                 <form onSubmit={handleReserver} className="animate-fade-in">
@@ -366,7 +364,7 @@ export default function ReservationHeroCarrousel() {
                     {currentQuestionnaire.titre}
                   </h2>
                   <p className="text-sm text-encre-muted mb-8">Remplissez ce questionnaire pour affiner votre accompagnement.</p>
-
+ 
                   <div className="space-y-6">
                     {/* Informations Personnelles - Section */}
                     <div>
@@ -382,7 +380,7 @@ export default function ReservationHeroCarrousel() {
                                 {q.label}
                                 {q.required && <span className="text-rose-700">*</span>}
                               </label>
-                              {q.type === 'text' || q.type === 'email' || q.type === 'tel' || q.type === 'number' ? (
+                              {(q.type === 'text' || q.type === 'email' || q.type === 'tel' || q.type === 'number') && (
                                 <input
                                   type={q.type}
                                   placeholder={q.placeholder}
@@ -391,12 +389,12 @@ export default function ReservationHeroCarrousel() {
                                   className="w-full px-4 py-3.5 rounded-xl border-2 border-sable focus:border-sauge-500 focus:ring-2 focus:ring-sauge-500/20 outline-none transition-all bg-ivoire"
                                   required={q.required}
                                 />
-                              ) : null}
+                              )}
                             </div>
                           ))}
                       </div>
                     </div>
-
+ 
                     {/* Questions Spécifiques au Thème */}
                     <div>
                       <h3 className="font-medium text-lg text-encre mb-4 pb-3 border-b-2 border-rose-200">
@@ -411,7 +409,7 @@ export default function ReservationHeroCarrousel() {
                                 {q.label}
                                 {q.required && <span className="text-rose-700">*</span>}
                               </label>
-
+ 
                               {/* Select */}
                               {q.type === 'select' && (
                                 <select
@@ -426,7 +424,7 @@ export default function ReservationHeroCarrousel() {
                                   ))}
                                 </select>
                               )}
-
+ 
                               {/* Textarea */}
                               {q.type === 'textarea' && (
                                 <textarea
@@ -438,7 +436,7 @@ export default function ReservationHeroCarrousel() {
                                   required={q.required}
                                 />
                               )}
-
+ 
                               {/* Checkbox */}
                               {q.type === 'checkbox' && (
                                 <div className="space-y-2.5">
@@ -461,7 +459,7 @@ export default function ReservationHeroCarrousel() {
                           ))}
                       </div>
                     </div>
-
+ 
                     <p className="text-xs text-encre-muted leading-relaxed pt-4 border-t border-sable">
                       📋 Vos réponses nous aident à mieux vous accompagner. Vos données restent strictement confidentielles.
                     </p>
@@ -469,7 +467,7 @@ export default function ReservationHeroCarrousel() {
                 </form>
               )}
             </div>
-
+ 
             {/* Navigation footer */}
             <div className="px-8 lg:px-10 py-6 bg-ivoire border-t border-sable flex items-center justify-between">
               {step > 1 ? (
@@ -483,7 +481,7 @@ export default function ReservationHeroCarrousel() {
               ) : (
                 <span />
               )}
-
+ 
               {step < 4 ? (
                 <button
                   onClick={next}
@@ -505,7 +503,7 @@ export default function ReservationHeroCarrousel() {
               )}
             </div>
           </div>
-
+ 
           {/* INFO RAPIDE */}
           <div className="mt-10 grid sm:grid-cols-3 gap-4 reveal">
             <div className="text-center p-5">
