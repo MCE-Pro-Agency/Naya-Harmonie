@@ -5,7 +5,7 @@ export const SERVICES_DATA = {
     label: 'Sexothérapie',
     icon: '💚',
     color: 'rose',
-    description: 'Un accompagnement personnalisé pour aider les femmes à mieux comprendre leur sexualité, se reconnecter à leur corps, retrouver confiance et vivre une vie intime épanouie.',
+    description: 'Un accompagnement personnalisé pour aider les femmes et les hommes à mieux comprendre leur sexualité, se reconnecter à leur corps, retrouver confiance et vivre une vie intime épanouie.',
     pourquoi: 'Parce que la sexualité est encore un sujet tabou pour beaucoup de femmes. Cet accompagnement permet de mieux comprendre son corps, dépasser les blocages, retrouver confiance et vivre une sexualité épanouie.',
     forfaits: [
       {
