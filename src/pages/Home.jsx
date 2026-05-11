@@ -271,7 +271,7 @@ export default function Home() {
                 Femme, épouse et maman de trois enfants, j'accompagne celles qui souhaitent retrouver leur équilibre intime, hormonal et émotionnel. Mon approche allie écoute bienveillante, conseils naturels et outils concrets pour traverser chaque étape de la vie féminine — de l'épanouissement intime à la traversée de la ménopause.
               </p>
               <p className="text-encre-soft leading-[1.85] mb-10 text-base lg:text-lg">
-                Certifiée par l'IPHM, je propose un accompagnement à distance, confidentiel et personnalisé, pensé pour les femmes mariées et les couples qui souhaitent cultiver une relation épanouie et durable.
+                Certifiée par l'IPHM, je propose un accompagnement à distance, confidentiel et personnalisé, pensé pour les femmes mariées, hommes mariés les et les couples qui souhaitent cultiver une relation épanouie et durable.
               </p>
               
 
