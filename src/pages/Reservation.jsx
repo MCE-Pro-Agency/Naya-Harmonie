@@ -3,6 +3,11 @@ import { useEffect, useState } from 'react';
 import { QUESTIONNAIRES_DATA } from './Questionnaires_Data';
 import { SERVICES_DATA } from './Services_Data';
 
+const PAYS = [
+  { id: 'senegal', label: 'Sénégal', code: 'SN', currency: 'FCFA' },
+  { id: 'france', label: 'France', code: 'FR', currency: '€' },
+];
+
 const PROFILS = [
   { id: 'femme', label: 'Femme seule', icon: '♀', desc: 'Je viens seule pour mon accompagnement' },
   { id: 'homme', label: 'Homme seul', icon: '♂', desc: 'Je viens seul pour mon accompagnement' },
