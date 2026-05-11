@@ -208,7 +208,7 @@ export default function Home() {
 
             <article className="reveal group">
               <div className="card-img aspect-[4/5] rounded-3xl overflow-hidden mb-6 relative">
-                <img src="./images/homme.png" alt="Bienveillance" className="w-full h-full object-cover" />
+                <img src="/images/homme.png" alt="Bienveillance" className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-rose-900/70 via-transparent to-transparent" />
                 <div className="absolute top-4 left-4 px-3 py-1.5 bg-ivoire/90 backdrop-blur rounded-full">
                   <span className="text-xs font-medium text-rose-700 tracking-wide">03 / Sérénité</span>
