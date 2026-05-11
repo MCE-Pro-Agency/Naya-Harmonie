@@ -338,23 +338,24 @@ export default function ReservationHeroCarrousel() {
                     Vous êtes <span className="italic text-sauge-700">?</span>
                   </h2>
                   <p className="text-sm text-encre-muted mb-8">Choisissez le profil qui vous correspond.</p>
-                  <div className="grid sm:grid-cols-2 gap-3">
-                    {PROFILS.map((p) => (
-                      <button
-                        key={p.id}
-                        onClick={() => setData({ ...data, profil: p.id })}
-                        className={`p-8 rounded-2xl border-2 transition-all text-center hover:-translate-y-0.5 ${
-                          data.profil === p.id
-                            ? 'border-sauge-500 bg-sauge-100 shadow-lg'
-                            : 'border-sable bg-ivoire hover:border-sauge-300'
-                        }`}
-                      >
-                        <p className="font-serif text-4xl text-rose-700 mb-3">{p.icon}</p>
-                        <p className="font-medium text-encre text-lg mb-1">{p.label}</p>
-                        <p className="text-xs text-encre-muted">{p.desc}</p>
-                      </button>
-                    ))}
-                  </div>
+                  <div className="grid sm:grid-cols-2 gap-3 justify-items-center">
+                  {PROFILS.map((p) => (
+                    <button
+                      key={p.id}
+                      onClick={() => setData({ ...data, profil: p.id })}
+                      className={`w-full p-8 rounded-2xl border-2 transition-all text-center hover:-translate-y-0.5 ${
+                        p.id === PROFILS[PROFILS.length - 1].id ? 'sm:col-span-2 sm:max-w-[50%]' : ''
+                      } ${
+                        data.profil === p.id
+                          ? 'border-sauge-500 bg-sauge-100 shadow-lg'
+                          : 'border-sable bg-ivoire hover:border-sauge-300'
+                      }`}
+                    >
+                      <p className="font-serif text-4xl text-rose-700 mb-3">{p.icon}</p>
+                      <p className="font-medium text-encre text-lg mb-1">{p.label}</p>
+                      <p className="text-xs text-encre-muted">{p.desc}</p>
+                    </button>
+                  ))}
                 </div>
               )}
 
