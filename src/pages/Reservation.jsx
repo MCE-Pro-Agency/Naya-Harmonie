@@ -104,12 +104,12 @@ export default function ReservationHeroCarrousel() {
  
       // APPELER LA SUPABASE EDGE FUNCTION
       const response = await fetch(
-        'https://xsggxgotuylifjsrjeml.supabase.co/functions/v1/submit-questionnaire',
+        'https://jutzkgdlajcjvnhbvedp.supabase.co/functions/v1/submit-questionnaire',
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhzZ2d4Z290dXlsaWZqc3JqZW1sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwOTY2NzgsImV4cCI6MjA5MzY3MjY3OH0.2XyUlME6gcJFKRaUq1yCPhSoBdY8vvTCelwgkYLOwl0'
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp1dHprZ2RsYWpjanZuaGJ2ZWRwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1NzYxNDEsImV4cCI6MjA5NDE1MjE0MX0.SJ91hRLVFSCB2D-iXpOO5EvrXxfm_L9iS_5oTCKSpZE'
           },
           body: JSON.stringify({
             questionnaire: data.questionnaire,
